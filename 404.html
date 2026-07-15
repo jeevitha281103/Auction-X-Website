@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found - AuctionX</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231a5f7a'/><path d='M8 12L16 8L24 12V20L16 24L8 20V12Z' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/><path d='M16 8V24M8 12L24 12M8 20L24 20' stroke='white' stroke-width='1.5' stroke-linecap='round' opacity='0.6'/></svg>">
+    <style>
+        .error-page { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; text-align: center; padding: 48px 24px; }
+        .error-code { font-size: 6rem; font-weight: 700; color: var(--primary); line-height: 1; margin-bottom: 8px; }
+        .error-title { font-size: 1.5rem; font-weight: 600; color: var(--text-primary); margin-bottom: 12px; }
+        .error-message { color: var(--text-secondary); margin-bottom: 24px; max-width: 400px; }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <header class="header" role="banner">
+            <div class="container">
+                <div class="header-inner flex justify-between items-center">
+                    <a href="index.html" class="logo flex items-center gap-8" aria-label="AuctionX Home">
+                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M8 12L16 8L24 12V20L16 24L8 20V12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 8V24M8 12L24 12M8 20L24 20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/></svg>
+                        <span class="logo-text font-bold text-xl">AuctionX</span>
+                    </a>
+                    <nav class="nav-main flex items-center gap-8" role="navigation" aria-label="Main navigation">
+                        <a href="index.html" class="nav-link">Home</a>
+                        <a href="categories.html" class="nav-link">Shop</a>
+                        <a href="live-bids.html" class="nav-link">Live Bids</a>
+                        <a href="dashboard.html" class="nav-link">Dashboard</a>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <main id="main">
+            <div class="container">
+                <div class="error-page">
+                    <div class="error-code">404</div>
+                    <h1 class="error-title">Page Not Found</h1>
+                    <p class="error-message">The page you're looking for doesn't exist or has been moved.</p>
+                    <a href="index.html" class="btn btn-primary">Back to Home</a>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer" role="contentinfo">
+            <div class="container">
+                <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+                    <p>&copy; 2024 AuctionX. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

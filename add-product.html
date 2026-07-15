@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Add New Product - List your antique for auction on AuctionX">
+    <title>Add Product - AuctionX</title>
+
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+    <div id="app">
+        <header class="header" id="header" role="banner">
+            <div class="container">
+                <div class="header-inner flex justify-between items-center">
+                    <a href="index.html" class="logo flex items-center gap-8" aria-label="AuctionX Home">
+                        
+                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M8 12L16 8L24 12V20L16 24L8 20V12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 8V24M8 12L24 12M8 20L24 20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/></svg>
+                                <span class="logo-text font-bold text-xl">AuctionX</span>
+                    </a>
+
+                    <nav class="nav-main flex items-center gap-8" id="navMain" role="navigation" aria-label="Main navigation">
+                        <a href="index.html" class="nav-link">Home</a>
+                        <a href="categories.html" class="nav-link">Shop</a>
+                        <a href="live-bids.html" class="nav-link">Live Bids</a>
+                        <a href="dashboard.html" class="nav-link">Dashboard</a>
+                        
+                    </nav>
+
+                    <div class="header-actions flex items-center gap-12" id="headerActions">
+                        <button class="btn btn-ghost btn-icon header-search-btn" id="searchToggle" aria-label="Search" aria-expanded="false">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <circle cx="11" cy="11" r="8"/>
+                                <path d="M21 21l-4.35-4.35"/>
+                            </svg>
+                        </button>
+
+
+
+                                                <div class="user-menu hidden" id="userMenu">
+                            <button class="btn btn-ghost user-menu-btn" id="userMenuBtn" aria-expanded="false" aria-haspopup="true" aria-label="User menu">
+                                <div class="user-avatar" id="userAvatar">A</div>
+                                <span class="user-first-name" id="userName">Account</span>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                    <path d="M6 9l6 6 6-6"/>
+                                </svg>
+                            </button>
+                            <div class="user-dropdown" id="userDropdown" role="menu" aria-hidden="true">
+                                <div class="dropdown-header">
+                                    <div class="dropdown-avatar" id="dropdownAvatar">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                    </div>
+                                    <div>
+                                        <p class="dropdown-name" id="dropdownName"></p>
+                                        <p class="dropdown-role" id="dropdownRole"></p>
+                                    </div>
+                                </div>
+                                <div class="dropdown-divider"></div>
+                                <a href="dashboard.html" class="dropdown-item" role="menuitem" id="dashboardLink">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+                                    </svg>
+                                    View Dashboard
+                                </a>
+                                <a href="login.html" class="dropdown-item" role="menuitem" id="addAccountLink">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/>
+                                    </svg>
+                                    Add Another Account
+                                </a>
+                                <button class="dropdown-item" role="menuitem" id="manageAccountsBtn">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                                    </svg>
+                                    Manage Accounts
+                                </button>
+                                <div class="dropdown-divider"></div>
+                                <button class="dropdown-item dropdown-item-danger" role="menuitem" id="logoutBtn">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+                                    </svg>
+                                    Logout
+                                </button>
+                            </div>
+                            <div class="user-dropdown accounts-panel" id="accountsPanel" role="menu" aria-hidden="true">
+                                <div class="dropdown-header">
+                                    <button class="btn btn-ghost accounts-back-btn" id="accountsBackBtn" aria-label="Back to menu">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                                        Back
+                                    </button>
+                                    <span class="accounts-panel-title">Switch Account</span>
+                                </div>
+                                <div class="accounts-list" id="accountsList"></div>
+                                <div class="dropdown-divider"></div>
+                                <a href="login.html" class="dropdown-item" role="menuitem">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                                    </svg>
+                                    Add New Account
+                                </a>
+                            </div>
+                        <div class="auth-buttons flex items-center gap-8" id="authButtons">
+                            <a href="login.html" class="btn btn-ghost"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Login</a>
+                        </div>
+
+                        <button class="mobile-menu-btn btn btn-ghost btn-icon" id="mobileMenuBtn" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileMenu">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <line x1="3" y1="12" x2="21" y2="12"/>
+                                <line x1="3" y1="6" x2="21" y2="6"/>
+                                <line x1="3" y1="18" x2="21" y2="18"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="search-overlay" id="searchOverlay" role="search" aria-hidden="true">
+                    <div class="search-container">
+                        <div class="search-input-wrapper">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <circle cx="11" cy="11" r="8"/>
+                                <path d="M21 21l-4.35-4.35"/>
+                            </svg>
+                            <input type="search" class="search-input" placeholder="Search auctions, categories, sellers..." aria-label="Search" autocomplete="off">
+                            <button class="search-close" aria-label="Close search">✕</button>
+                        </div>
+                        <div class="search-results" id="searchResults" role="listbox"></div>
+                        <div class="search-suggestions" id="searchSuggestions">
+                            <p class="search-hint">Popular: <span>Antique Jewelry</span>, <span>Vintage Watches</span>, <span>Art Paintings</span>, <span>Rare Coins</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <nav class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Mobile menu" aria-hidden="true">
+                    <div class="mobile-menu-header flex justify-between items-center">
+                        <span class="font-semibold">Menu</span>
+                        <button class="mobile-menu-close btn btn-ghost btn-icon" aria-label="Close menu">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <line x1="18" y1="6" x2="6" y2="18"/>
+                                <line x1="6" y1="6" x2="18" y2="18"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <ul class="mobile-nav-list" role="list">
+                        <li><a href="index.html" class="mobile-nav-link">Home</a></li>
+                        <li><a href="categories.html" class="mobile-nav-link">Shop</a></li>
+                        <li><a href="live-bids.html" class="mobile-nav-link">Live Bids</a></li>
+                    </ul>
+                    <div class="mobile-menu-divider"></div>
+                    <div class="mobile-auth" id="mobileAuth">
+                        <a href="login.html" class="btn btn-primary btn-block">Login</a>
+                        </div>
+                    <div class="mobile-user hidden" id="mobileUser">
+                        <div class="mobile-user-info">
+                            <div class="mobile-user-avatar" id="mobileUserAvatar"></div>
+                            <div>
+                                <p class="mobile-user-name" id="mobileUserName"></p>
+                                <p class="mobile-user-role" id="mobileUserRole"></p>
+                            </div>
+                        </div>
+                        <a href="profile.html" class="mobile-nav-link">My Profile</a>
+                        <a href="dashboard.html" class="mobile-nav-link">Dashboard</a>
+                        <a href="my-bids.html" class="mobile-nav-link">My Bids</a>
+                        <a href="seller-dashboard.html" class="mobile-nav-link hidden" id="mobileSellerLink">Seller Dashboard</a>
+                        <a href="admin-dashboard.html" class="mobile-nav-link hidden" id="mobileAdminLink">Admin Dashboard</a>
+                        <button class="mobile-nav-link mobile-nav-link-danger w-full text-left" id="mobileLogoutBtn">Logout</button>
+                    </div>
+                </nav>
+            </div>
+        </header>
+
+        <main id="main" role="main">
+            <div class="container">
+                <div class="page-header">
+                    <h1 class="page-title">Add New Product</h1>
+                    <p class="page-subtitle">List your antique item for auction</p>
+                </div>
+
+                <div class="grid form-grid">
+                    <div class="product-form-container">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="section-title mb-0">Product Details</h2>
+                            </div>
+                            <div class="card-body">
+                                <form data-form="addProduct" id="addProductForm" novalidate>
+                                    <div class="form-group">
+                                        <label for="productCategory" class="form-label">Category <span class="text-error">*</span></label>
+                                        <div class="select-wrapper">
+                                            <select id="productCategory" name="category" class="form-input" required>
+                                                <option value="">Select category</option>
+                                                <option value="fine_art">🖼️ Fine Art</option>
+                                                <option value="antique_furniture">🪑 Antique Furniture</option>
+                                                <option value="antique_jewellery">💍 Antique Jewellery</option>
+                                                <option value="collectibles">🪙 Collectibles</option>
+                                                <option value="decorative_arts">🏺 Decorative Arts</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="productName" class="form-label">Product Name <span class="text-error">*</span></label>
+                                        <input type="text" id="productName" name="name" class="form-input" required placeholder="e.g., Victorian Diamond Necklace 1880" autocomplete="off" maxlength="100">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="productDescription" class="form-label">Description <span class="text-error">*</span></label>
+                                        <textarea id="productDescription" name="description" class="form-input" rows="6" required placeholder="Detailed description of the item including era, materials, condition, provenance, and any certificates of authenticity..."></textarea>
+                                        <p class="form-help">Include era, materials, dimensions, condition, provenance, and certificates</p>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">Product Images</label>
+                                        <div class="image-upload-area" id="imageUploadArea">
+                                            <input type="file" id="productImages" name="images" accept="image/*" multiple class="sr-only" aria-label="Upload product images">
+                                            <div class="upload-placeholder">
+                                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                                    <polyline points="21 15 16 10 5 21"/>
+                                </svg>
+                                                <p class="font-medium">Drag & drop images here</p>
+                                                <p class="text-secondary text-sm">or click to browse</p>
+                                                <button type="button" class="btn btn-outline btn-sm mt-16" id="browseImagesBtn">Browse Files</button>
+                                            </div>
+                                            <p class="form-help mt-16">Upload up to 10 images. First image will be used as the main thumbnail.</p>
+                                        </div>
+                                        <div class="image-previews flex flex-wrap gap-12 mt-16" id="imagePreviews"></div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="card mt-24">
+                            <div class="card-header">
+                                <h2 class="section-title mb-0">Pricing & Bidding</h2>
+                            </div>
+                            <div class="card-body">
+                                <form data-form="addProductPricing" id="pricingForm" novalidate>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="startingBid" class="form-label">Starting Bid (₹) <span class="text-error">*</span></label>
+                                            <input type="number" id="startingBid" name="startingBid" class="form-input" required min="1000" step="1000" placeholder="50000" autocomplete="off">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="minBidIncrement" class="form-label">Minimum Bid Increment (₹) <span class="text-error">*</span></label>
+                                            <input type="number" id="minBidIncrement" name="minBidIncrement" class="form-input" required min="100" step="100" placeholder="1000" autocomplete="off">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="reservePrice" class="form-label">Reserve Price (₹) <span class="text-muted">(Optional)</span></label>
+                                            <input type="number" id="reservePrice" name="reservePrice" class="form-input" min="1000" step="1000" placeholder="Minimum acceptable price" autocomplete="off">
+                                            <p class="form-help">Item won't sell below this price. Leave empty for no reserve.</p>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="buyNowPrice" class="form-label">Buy Now Price (₹) <span class="text-muted">(Optional)</span></label>
+                                            <input type="number" id="buyNowPrice" name="buyNowPrice" class="form-input" min="1000" step="1000" placeholder="Instant purchase price" autocomplete="off">
+                                            <p class="form-help">Allow immediate purchase at this price.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="checkbox-wrapper">
+                                            <input type="checkbox" name="autoExtend" id="autoExtend" checked>
+                                            <span class="checkbox-custom"></span>
+                                            Auto-extend bidding by 5 minutes if bid placed in final minute
+                                        </label>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="checkbox-wrapper">
+                                            <input type="checkbox" name="allowOffers" id="allowOffers">
+                                            <span class="checkbox-custom"></span>
+                                            Allow buyers to make offers before auction starts
+                                        </label>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="card mt-24">
+                            <div class="card-header">
+                                <h2 class="section-title mb-0">Additional Details</h2>
+                            </div>
+                            <div class="card-body">
+                                <form data-form="addProductDetails" id="detailsForm" novalidate>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="era" class="form-label">Era / Period</label>
+                                            <input type="text" id="era" name="era" class="form-input" placeholder="e.g., Victorian (1837-1901), Art Deco (1920s-1930s)" autocomplete="off">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="materials" class="form-label">Materials</label>
+                                            <input type="text" id="materials" name="materials" class="form-input" placeholder="e.g., 18K Gold, Diamonds, Platinum" autocomplete="off">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="dimensions" class="form-label">Dimensions</label>
+                                            <input type="text" id="dimensions" name="dimensions" class="form-input" placeholder="e.g., 45cm length, 12g weight" autocomplete="off">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="condition" class="form-label">Condition</label>
+                                            <select id="condition" name="condition" class="form-input">
+                                                <option value="">Select condition</option>
+                                                <option value="mint">Mint - Perfect condition</option>
+                                                <option value="excellent">Excellent - Minimal wear</option>
+                                                <option value="very_good">Very Good - Minor wear</option>
+                                                <option value="good">Good - Visible wear</option>
+                                                <option value="fair">Fair - Significant wear</option>
+                                                <option value="restored">Restored</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="provenance" class="form-label">Provenance</label>
+                                            <textarea id="provenance" name="provenance" class="form-input" rows="3" placeholder="History of ownership, previous auctions, documentation..."></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="certificates" class="form-label">Certificates / Documentation</label>
+                                            <textarea id="certificates" name="certificates" class="form-input" rows="3" placeholder="GIA, AGS, or other certification details..."></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="tags" class="form-label">Tags (comma separated)</label>
+                                        <input type="text" id="tags" name="tags" class="form-input" placeholder="diamond, necklace, victorian, 18k, gold" autocomplete="off">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-16 mt-32">
+                            <button type="button" class="btn btn-outline btn-lg flex-1" onclick="App.navigate('seller-dashboard.html')">Cancel</button>
+                            <button type="button" class="btn btn-primary btn-lg flex-1" id="submitProductBtn">
+                                <span class="btn-text">List Product</span>
+                                <span class="btn-loader" style="display: none;"><svg class="spinner" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" stroke-opacity="0.25"/><path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"/></svg> Publishing...</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <aside class="listing-preview">
+                        <div class="card sticky" style="top: 100px;">
+                            <div class="card-header">
+                                <h2 class="section-title mb-0">Listing Preview</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="preview-card">
+                                    <div class="preview-image" id="previewImage" style="aspect-ratio: 4/3; background: var(--background); display: flex; align-items: center; justify-content: center; border-radius: var(--radius-md); font-size: 4rem; margin-bottom: 16px; overflow: hidden;">
+                                        💎
+                                    </div>
+                                    <span class="badge badge-info mb-12" id="previewCategory">Fine Art</span>
+                                    <h3 class="font-bold text-lg mb-8" id="previewName">Product Name</h3>
+                                    <p class="text-secondary text-sm mb-16" id="previewDescription">Product description preview...</p>
+                                    <div class="preview-bid flex justify-between items-center mb-16">
+                                        <div>
+                                            <p class="text-sm text-secondary">Starting Bid</p>
+                                            <p class="font-semibold text-lg text-primary" id="previewStartingBid">₹50,000</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-secondary">Min. Increment</p>
+                                            <p class="font-semibold text-lg" id="previewIncrement">₹1,000</p>
+                                        </div>
+                                    </div>
+                                    <div class="preview-meta text-xs text-muted space-y-2" id="previewMeta">
+                                        <p>Seller: <span id="previewSeller">Your Name</span></p>
+                                        <p>Era: <span id="previewEra">-</span></p>
+                                        <p>Materials: <span id="previewMaterials">-</span></p>
+                                        <p>Condition: <span id="previewCondition">-</span></p>
+                                    </div>
+                                </div>
+
+                                <div class="alert alert-info mt-24">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="12" y1="16" x2="12" y2="12"/>
+                                        <line x1="12" y1="8" x2="12.01" y2="8"/>
+                                    </svg>
+                                    <div>
+                                        <p class="font-medium">Listing Guidelines</p>
+                                        <ul class="text-sm mt-8 space-y-4">
+                                            <li>• Provide accurate descriptions and clear photos</li>
+                                            <li>• Include all known flaws or restorations</li>
+                                            <li>• Certificates increase buyer confidence</li>
+                                            <li>• Admin will review before auction starts</li>
+                                            <li>• 2% platform fee on final sale price</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer" role="contentinfo">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-brand">
+                        <a href="index.html" class="logo flex items-center gap-8">
+                            
+                            <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M8 12L16 8L24 12V20L16 24L8 20V12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 8V24M8 12L24 12M8 20L24 20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/></svg>
+                                <span class="logo-text font-bold text-xl">AuctionX</span>
+                        </a>
+                        <p class="footer-tagline">Premium auction marketplace for rare and valuable collectibles.</p>
+                        <div class="social-links flex gap-12">
+                            <a href="#" class="social-link" aria-label="Twitter"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
+                            <a href="#" class="social-link" aria-label="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+                            <a href="#" class="social-link" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+                        </div>
+                    </div>
+                    <nav class="footer-nav" aria-label="Footer navigation">
+                        <div class="footer-col">
+                            <h4 class="footer-title">Marketplace</h4>
+                            <ul role="list">
+                                <li><a href="categories.html">All Categories</a></li>
+                                <li><a href="live-bids.html">Live Auctions</a></li>
+                                <li><a href="seller-dashboard.html">Sell with Us</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+                <div class="footer-bottom">
+                        <p>&copy; 2024 AuctionX. All rights reserved.</p>
+                        <div class="social-links flex gap-12" style="justify-content: center; margin-top: 12px;">
+                            <a href="https://www.instagram.com/_jeevitha_.28/" target="_blank" class="social-link" aria-label="Instagram" title="Follow on Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+                            <a href="https://www.linkedin.com/in/r-s-jeevitha-raja-7692642b3?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" class="social-link" aria-label="LinkedIn" title="Connect on LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+                            <a href="https://github.com/jeevitha281103" target="_blank" class="social-link" aria-label="GitHub" title="View on GitHub"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
+                            <a href="mailto:jeevitharaja2811@gmail.com" class="social-link" aria-label="Email" title="Send Email"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+                            <a href="https://t.me/@Jeevitha_28_11" target="_blank" class="social-link" aria-label="Telegram" title="Join on Telegram"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></a>
+                        </div>
+                        <p class="footer-disclaimer" style="margin-top: 12px;">AuctionX is a marketplace platform. All items sold by third-party sellers.</p>
+                    </div>
+            </div>
+        </footer>
+
+        <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-hidden="true" style="display: none;">
+            <div class="modal" id="modal" role="document">
+                <div class="modal-header flex justify-between items-center">
+                    <h3 class="modal-title" id="modalTitle"></h3>
+                    <button class="modal-close btn btn-ghost btn-icon" aria-label="Close modal">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="modal-body" id="ModalBody"></div>
+                <div class="modal-footer" id="modalFooter"></div>
+            </div>
+        </div>
+
+        <div class="toast-container" id="toastContainer" aria-live="polite" aria-label="Notifications"></div>
+    </div>
+
+    <script src="data/auction-data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!App.currentUser || (App.currentUser.role !== 'seller' && App.currentUser.role !== 'admin')) {
+                App.showToast('Access Denied', 'Seller or admin account required', 'error');
+                App.navigate('index.html');
+                return;
+            }
+
+            initForm();
+            initImageUpload();
+            initPreviewUpdate();
+        });
+
+        function initForm() {
+            const form = document.getElementById('addProductForm');
+            const pricingForm = document.getElementById('pricingForm');
+            const detailsForm = document.getElementById('detailsForm');
+
+            const allInputs = document.querySelectorAll('#addProductForm input[required], #addProductForm select[required], #addProductForm textarea[required], #pricingForm input[required], #pricingForm select[required]');
+
+            allInputs.forEach(input => {
+                input.addEventListener('blur', () => App.validateField(input));
+                input.addEventListener('input', () => App.clearFieldError(input));
+            });
+
+            document.getElementById('submitProductBtn')?.addEventListener('click', submitProduct);
+        }
+
+        function initImageUpload() {
+            const uploadArea = document.getElementById('imageUploadArea');
+            const fileInput = document.getElementById('productImages');
+            const browseBtn = document.getElementById('browseImagesBtn');
+            const previews = document.getElementById('imagePreviews');
+            const previewImage = document.getElementById('previewImage');
+
+            let images = [];
+
+            browseBtn?.addEventListener('click', () => fileInput.click());
+
+            uploadArea?.addEventListener('click', (e) => {
+                if (e.target === uploadArea || e.target.classList.contains('upload-placeholder')) {
+                    fileInput.click();
+                }
+            });
+
+            uploadArea?.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('drag-over');
+            });
+
+            uploadArea?.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('drag-over');
+            });
+
+            uploadArea?.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('drag-over');
+                handleFiles(e.dataTransfer.files);
+            });
+
+            fileInput?.addEventListener('change', (e) => {
+                handleFiles(e.target.files);
+            });
+
+            function handleFiles(files) {
+                const fileArray = Array.from(files).filter(f => f.type.startsWith('image/'));
+
+                fileArray.forEach(file => {
+                    if (images.length >= 10) return;
+
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        images.push({ file, dataUrl: e.target.result });
+                        renderPreviews();
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            function renderPreviews() {
+                previews.innerHTML = images.map((img, index) => `
+                    <div class="preview-item relative" style="width: 80px; height: 80px; border-radius: var(--radius-md); overflow: hidden; border: 2px solid var(--border);">
+                        <img src="${img.dataUrl}" alt="Preview ${index + 1}" style="width: 100%; height: 100%; object-fit: cover;">
+                        ${index === 0 ? '<span class="absolute top-2 left-2 badge badge-primary text-xs">Main</span>' : ''}
+                        <button type="button" class="absolute top-2 right-2 btn btn-ghost btn-icon btn-sm" onclick="removeImage(${index})" aria-label="Remove image">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        </button>
+                    </div>
+                `).join('');
+
+                if (images.length > 0) {
+                    previewImage.innerHTML = `<img src="${images[0].dataUrl}" alt="Main preview" style="width: 100%; height: 100%; object-fit: cover;">`;
+                } else {
+                    previewImage.innerHTML = '💎';
+                }
+            }
+
+            window.removeImage = (index) => {
+                images.splice(index, 1);
+                renderPreviews();
+            };
+        }
+
+        function initPreviewUpdate() {
+            const updatePreview = () => {
+                document.getElementById('previewCategory').textContent = document.getElementById('productCategory').selectedOptions[0]?.text || 'Fine Art';
+                document.getElementById('previewName').textContent = document.getElementById('productName').value || 'Product Name';
+                document.getElementById('previewDescription').textContent = document.getElementById('productDescription').value?.substring(0, 100) + '...' || 'Product description preview...';
+                document.getElementById('previewStartingBid').textContent = App.formatCurrency(parseFloat(document.getElementById('startingBid').value) || 0);
+                document.getElementById('previewIncrement').textContent = App.formatCurrency(parseFloat(document.getElementById('minBidIncrement').value) || 0);
+                document.getElementById('previewSeller').textContent = App.currentUser?.name || 'Your Name';
+                document.getElementById('previewEra').textContent = document.getElementById('era').value || '-';
+                document.getElementById('previewMaterials').textContent = document.getElementById('materials').value || '-';
+                document.getElementById('previewCondition').textContent = document.getElementById('condition').selectedOptions[0]?.text || '-';
+            };
+
+            ['productCategory', 'productName', 'productDescription', 'startingBid', 'minBidIncrement', 'era', 'materials', 'condition'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.addEventListener('input', updatePreview);
+                    el.addEventListener('change', updatePreview);
+                }
+            });
+
+            updatePreview();
+        }
+
+        async function submitProduct() {
+            const btn = document.getElementById('submitProductBtn');
+            const btnText = btn.querySelector('.btn-text');
+            const btnLoader = btn.querySelector('.btn-loader');
+
+            const allInputs = document.querySelectorAll('#addProductForm input[required], #addProductForm select[required], #addProductForm textarea[required], #pricingForm input[required], #pricingForm select[required]');
+            let valid = true;
+
+            allInputs.forEach(input => {
+                if (!App.validateField(input)) valid = false;
+            });
+
+            if (!valid) {
+                App.showToast('Validation Error', 'Please fill all required fields correctly', 'error');
+                return;
+            }
+
+            btn.disabled = true;
+            btnText.style.display = 'none';
+            btnLoader.style.display = 'inline-flex';
+
+            const formData = new FormData(document.getElementById('addProductForm'));
+            const pricingData = new FormData(document.getElementById('pricingForm'));
+            const detailsData = new FormData(document.getElementById('detailsForm'));
+
+            const productData = {
+                category: formData.get('category'),
+                name: formData.get('name'),
+                description: formData.get('description'),
+                startingBid: parseFloat(pricingData.get('startingBid')),
+                minBidIncrement: parseFloat(pricingData.get('minBidIncrement')),
+                reservePrice: pricingData.get('reservePrice') ? parseFloat(pricingData.get('reservePrice')) : null,
+                buyNowPrice: pricingData.get('buyNowPrice') ? parseFloat(pricingData.get('buyNowPrice')) : null,
+                autoExtend: pricingData.get('autoExtend') === 'on',
+                allowOffers: pricingData.get('allowOffers') === 'on',
+                era: detailsData.get('era'),
+                materials: detailsData.get('materials'),
+                dimensions: detailsData.get('dimensions'),
+                condition: detailsData.get('condition'),
+                provenance: detailsData.get('provenance'),
+                certificates: detailsData.get('certificates'),
+                tags: detailsData.get('tags')?.split(',').map(t => t.trim()).filter(t => t) || []
+            };
+
+            const product = createProduct(productData);
+
+            btn.disabled = false;
+            btnText.style.display = 'inline';
+            btnLoader.style.display = 'none';
+
+            if (product) {
+                App.showToast('Success!', `${product.name} has been listed for auction`, 'success');
+                setTimeout(() => App.navigate('seller-dashboard.html'), 1500);
+            } else {
+                App.showToast('Error', 'Failed to create product', 'error');
+            }
+        }
+    </script>
+
+    <style>
+        .image-upload-area {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius-lg);
+            padding: 48px 24px;
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .image-upload-area:hover,
+        .image-upload-area.drag-over {
+            border-color: var(--primary);
+            background: rgba(26, 95, 122, 0.05);
+        }
+
+        .upload-placeholder {
+            color: var(--text-secondary);
+        }
+
+        .upload-placeholder svg {
+            margin: 0 auto 16px;
+            color: var(--text-muted);
+        }
+
+        .image-previews {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .preview-item {
+            position: relative;
+        }
+
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @media (max-width: 1024px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .listing-preview {
+                position: static;
+            }
+
+            .listing-preview .card.sticky {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 24px 0;
+            }
+
+            .flex.gap-16 {
+                flex-direction: column;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</body>
+</html>

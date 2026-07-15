@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Login to AuctionX - Access your account to bid on antiques, manage your profile, and track your purchases.">
+    <title>Login - AuctionX</title>
+
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+    <div id="app">
+        <header class="header" id="header" role="banner">
+            <div class="container">
+                <div class="header-inner flex justify-between items-center">
+                    <a href="index.html" class="logo flex items-center gap-8" aria-label="AuctionX Home">
+                        
+                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M8 12L16 8L24 12V20L16 24L8 20V12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 8V24M8 12L24 12M8 20L24 20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/></svg>
+                                <span class="logo-text font-bold text-xl">AuctionX</span>
+                    </a>
+
+                    <nav class="nav-main flex items-center gap-8" id="navMain" role="navigation" aria-label="Main navigation">
+                        <a href="index.html" class="nav-link">Home</a>
+                        <a href="categories.html" class="nav-link">Shop</a>
+                        <a href="live-bids.html" class="nav-link">Live Bids</a>
+                        <a href="dashboard.html" class="nav-link">Dashboard</a>
+                    </nav>
+
+                    <div class="header-actions flex items-center gap-12" id="headerActions">
+                        <div class="auth-buttons flex items-center gap-8" id="authButtons">
+                            <a href="login.html" class="btn btn-primary"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main id="main" role="main">
+            <section class="auth-page">
+                <div class="container">
+                    <div class="auth-container card">
+                        <div class="auth-header text-center">
+                            <div class="auth-logo flex justify-center">
+                                <svg width="36" height="36" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect width="32" height="32" rx="8" fill="var(--primary)"/>
+                                    <path d="M8 12L16 8L24 12V20L16 24L8 20V12Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M16 8V24M8 12L24 12M8 20L24 20" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+                                </svg>
+                            </div>
+                            <h1 class="auth-title" id="authFormTitle">Welcome Back</h1>
+                            <p class="auth-subtitle" id="authFormSubtitle">Sign in to your AuctionX account to continue bidding</p>
+                        </div>
+
+                        <div class="auth-tabs flex" role="tablist">
+                            <button class="auth-tab active" data-tab="login" role="tab" aria-selected="true">Sign In</button>
+                            <button class="auth-tab" data-tab="register" role="tab" aria-selected="false">Create Account</button>
+                        </div>
+
+                        <form class="auth-form" id="loginForm" data-form="login" novalidate>
+                            <div class="form-group">
+                                <label for="role" class="form-label">Account Type</label>
+                                <div class="select-wrapper">
+                                    <select id="role" name="role" class="form-input" required>
+                                        <option value="">Select account type</option>
+                                        <option value="customer">Customer (Bidder)</option>
+                                        <option value="seller">Seller</option>
+                                        <option value="admin">Admin</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" id="email" name="email" class="form-input" placeholder="you@example.com" required autocomplete="email">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password" class="form-label">Password</label>
+                                <div class="password-wrapper">
+                                    <input type="password" id="password" name="password" class="form-input" placeholder="Enter your password" required autocomplete="current-password">
+                                    <button type="button" class="password-toggle" aria-label="Toggle password visibility">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                            <circle cx="12" cy="12" r="3"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="form-group flex justify-between items-center">
+                                <label class="checkbox-wrapper">
+                                    <input type="checkbox" name="remember" id="remember">
+                                    <span class="checkbox-custom"></span>
+                                    Remember me
+                                </label>
+
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                            <p class="text-center mt-16 mb-0">
+                                <a href="register.html" class="btn btn-ghost btn-block">Create Account</a>
+                            </p>
+                        </form>
+
+                        <form class="auth-form" id="registerForm" data-form="register" novalidate style="display:none;">
+                            <div class="form-group">
+                                <label for="regRole" class="form-label">Account Type <span class="text-error">*</span></label>
+                                <div class="select-wrapper">
+                                    <select id="regRole" name="role" class="form-input" required>
+                                        <option value="">Select account type</option>
+                                        <option value="customer">Customer (Bidder)</option>
+                                        <option value="seller">Seller</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="firstName" class="form-label">First Name <span class="text-error">*</span></label>
+                                    <input type="text" id="firstName" name="firstName" class="form-input" placeholder="John" required autocomplete="given-name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName" class="form-label">Last Name <span class="text-error">*</span></label>
+                                    <input type="text" id="lastName" name="lastName" class="form-input" placeholder="Doe" required autocomplete="family-name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="regEmail" class="form-label">Email Address <span class="text-error">*</span></label>
+                                <input type="email" id="regEmail" name="email" class="form-input" placeholder="you@example.com" required autocomplete="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="phone" class="form-label">Phone Number <span class="text-error">*</span></label>
+                                <input type="tel" id="phone" name="phone" class="form-input" placeholder="+91 98765 43210" required autocomplete="tel">
+                            </div>
+                            <div class="form-group">
+                                <label for="regPassword" class="form-label">Password <span class="text-error">*</span></label>
+                                <div class="password-wrapper">
+                                    <input type="password" id="regPassword" name="password" class="form-input" placeholder="Create a strong password" required autocomplete="new-password" minlength="8">
+                                    <button type="button" class="password-toggle" aria-label="Toggle password visibility">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                            <circle cx="12" cy="12" r="3"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="password-strength" id="passwordStrength" aria-live="polite"></div>
+                                <p class="form-help">Minimum 8 characters with uppercase, lowercase, number & symbol</p>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmPassword" class="form-label">Confirm Password <span class="text-error">*</span></label>
+                                <div class="password-wrapper">
+                                    <input type="password" id="confirmPassword" name="confirmPassword" class="form-input" placeholder="Confirm your password" required autocomplete="new-password">
+                                    <button type="button" class="password-toggle" aria-label="Toggle password visibility">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                            <circle cx="12" cy="12" r="3"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="sellerFields" class="seller-fields" style="display:none;">
+                                <h3 class="section-title mb-16">Bank Details (Required for Sellers)</h3>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="accountNumber" class="form-label">Account Number <span class="text-error">*</span></label>
+                                        <input type="text" id="accountNumber" name="accountNumber" class="form-input" placeholder="1234567890" autocomplete="off">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ifsc" class="form-label">IFSC Code <span class="text-error">*</span></label>
+                                        <input type="text" id="ifsc" name="ifsc" class="form-input" placeholder="SBIN0001234" autocomplete="off" style="text-transform:uppercase">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="bankName" class="form-label">Bank Name <span class="text-error">*</span></label>
+                                    <input type="text" id="bankName" name="bankName" class="form-input" placeholder="State Bank of India" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="address" class="form-label">Address <span class="text-error">*</span></label>
+                                <textarea id="address" name="address" class="form-input" rows="3" placeholder="Full address for shipping/billing" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox-wrapper">
+                                    <input type="checkbox" name="terms" id="terms" required>
+                                    <span class="checkbox-custom"></span>
+                                    I agree to the <a href="#" target="_blank">Terms of Service</a> and <a href="#" target="_blank">Privacy Policy</a>
+                                </label>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer" role="contentinfo">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-brand">
+                        <a href="index.html" class="logo flex items-center gap-8">
+                            
+                            <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M8 12L16 8L24 12V20L16 24L8 20V12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 8V24M8 12L24 12M8 20L24 20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/></svg>
+                                <span class="logo-text font-bold text-xl">AuctionX</span>
+                        </a>
+                        <p class="footer-tagline">Premium auction marketplace for rare and valuable collectibles.</p>
+                        <div class="social-links flex gap-12">
+                            <a href="#" class="social-link" aria-label="Twitter"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
+                            <a href="#" class="social-link" aria-label="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+                            <a href="#" class="social-link" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+                        </div>
+                    </div>
+                    <nav class="footer-nav" aria-label="Footer navigation">
+                        <div class="footer-col">
+                            <h4 class="footer-title">Marketplace</h4>
+                            <ul role="list">
+                                <li><a href="categories.html">All Categories</a></li>
+                                <li><a href="live-bids.html">Live Auctions</a></li>
+                                <li><a href="seller-dashboard.html">Sell with Us</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+                <div class="footer-bottom">
+                        <p>&copy; 2024 AuctionX. All rights reserved.</p>
+                        <div class="social-links flex gap-12" style="justify-content: center; margin-top: 12px;">
+                            <a href="https://www.instagram.com/_jeevitha_.28/" target="_blank" class="social-link" aria-label="Instagram" title="Follow on Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+                            <a href="https://www.linkedin.com/in/r-s-jeevitha-raja-7692642b3?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" class="social-link" aria-label="LinkedIn" title="Connect on LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+                            <a href="https://github.com/jeevitha281103" target="_blank" class="social-link" aria-label="GitHub" title="View on GitHub"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
+                            <a href="mailto:jeevitharaja2811@gmail.com" class="social-link" aria-label="Email" title="Send Email"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+                            <a href="https://t.me/@Jeevitha_28_11" target="_blank" class="social-link" aria-label="Telegram" title="Join on Telegram"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></a>
+                        </div>
+                        <p class="footer-disclaimer" style="margin-top: 12px;">AuctionX is a marketplace platform. All items sold by third-party sellers.</p>
+                    </div>
+            </div>
+        </footer>
+
+        <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-hidden="true" style="display: none;">
+            <div class="modal" id="modal" role="document">
+                <div class="modal-header flex justify-between items-center">
+                    <h3 class="modal-title" id="modalTitle"></h3>
+                    <button class="modal-close btn btn-ghost btn-icon" aria-label="Close modal">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="modal-body" id="ModalBody"></div>
+                <div class="modal-footer" id="modalFooter"></div>
+            </div>
+        </div>
+
+        <div class="toast-container" id="toastContainer" aria-live="polite" aria-label="Notifications"></div>
+    </div>
+
+    <script src="data/auction-data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabs = document.querySelectorAll('.auth-tab');
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const title = document.getElementById('authFormTitle');
+            const subtitle = document.getElementById('authFormSubtitle');
+            const footer = document.getElementById('authFooter');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const isLogin = tab.dataset.tab === 'login';
+                    tabs.forEach(t => { t.classList.toggle('active', t === tab); t.setAttribute('aria-selected', t === tab); });
+                    loginForm.style.display = isLogin ? '' : 'none';
+                    registerForm.style.display = isLogin ? 'none' : '';
+                    title.textContent = isLogin ? 'Welcome Back' : 'Create Your Account';
+                    subtitle.textContent = isLogin ? 'Sign in to your AuctionX account to continue bidding' : 'Join AuctionX to start bidding or selling antiques';
+                    footer.style.display = isLogin ? '' : 'none';
+                });
+            });
+
+            document.querySelectorAll('.password-toggle').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const input = this.parentElement.querySelector('input');
+                    const icon = this.querySelector('svg');
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        icon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>';
+                    } else {
+                        input.type = 'password';
+                        icon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+                    }
+                });
+            });
+
+            const roleSelect = document.getElementById('regRole');
+            const sellerFields = document.getElementById('sellerFields');
+            roleSelect?.addEventListener('change', () => {
+                sellerFields.style.display = roleSelect.value === 'seller' ? 'block' : 'none';
+                sellerFields.querySelectorAll('input').forEach(inp => inp.required = roleSelect.value === 'seller');
+            });
+
+            const pwdInput = document.getElementById('regPassword');
+            const strengthEl = document.getElementById('passwordStrength');
+            pwdInput?.addEventListener('input', () => {
+                const val = pwdInput.value;
+                let s = 0, fb = [];
+                if (val.length >= 8) s++; else fb.push('8+ characters');
+                if (/[A-Z]/.test(val)) s++; else fb.push('uppercase');
+                if (/[a-z]/.test(val)) s++; else fb.push('lowercase');
+                if (/[0-9]/.test(val)) s++; else fb.push('number');
+                if (/[^A-Za-z0-9]/.test(val)) s++; else fb.push('symbol');
+                const labels = ['Very Weak','Weak','Fair','Good','Strong'];
+                const colors = ['var(--error)','var(--error)','var(--warning)','var(--success)','var(--success)'];
+                strengthEl.textContent = `Password strength: ${labels[s-1] || 'Very Weak'}`;
+                strengthEl.style.color = colors[s-1] || colors[0];
+                if (fb.length > 0) strengthEl.textContent += ` - Missing: ${fb.join(', ')}`;
+            });
+        });
+    </script>
+</body>
+</html>

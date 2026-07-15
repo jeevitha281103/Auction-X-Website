@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Your AuctionX Dashboard - Track bids, purchases, and account activity">
+    <title>Dashboard - AuctionX</title>
+
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+    <div id="app">
+        <header class="header" id="header" role="banner">
+            <div class="container">
+                <div class="header-inner flex justify-between items-center">
+                    <a href="index.html" class="logo flex items-center gap-8" aria-label="AuctionX Home">
+                        
+                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M8 12L16 8L24 12V20L16 24L8 20V12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 8V24M8 12L24 12M8 20L24 20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/></svg>
+                                <span class="logo-text font-bold text-xl">AuctionX</span>
+                    </a>
+
+                    <nav class="nav-main flex items-center gap-8" id="navMain" role="navigation" aria-label="Main navigation">
+                        <a href="index.html" class="nav-link">Home</a>
+                        <a href="categories.html" class="nav-link">Shop</a>
+                        <a href="live-bids.html" class="nav-link">Live Bids</a>
+                        <a href="dashboard.html" class="nav-link">Dashboard</a>
+                    </nav>
+
+                    <div class="header-actions flex items-center gap-12" id="headerActions">
+                        <button class="btn btn-ghost btn-icon header-search-btn" id="searchToggle" aria-label="Search" aria-expanded="false">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <circle cx="11" cy="11" r="8"/>
+                                <path d="M21 21l-4.35-4.35"/>
+                            </svg>
+                        </button>
+
+                                                <div class="user-menu hidden" id="userMenu">
+                            <button class="btn btn-ghost user-menu-btn" id="userMenuBtn" aria-expanded="false" aria-haspopup="true" aria-label="User menu">
+                                <div class="user-avatar" id="userAvatar">A</div>
+                                <span class="user-first-name" id="userName">Account</span>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                    <path d="M6 9l6 6 6-6"/>
+                                </svg>
+                            </button>
+                            <div class="user-dropdown" id="userDropdown" role="menu" aria-hidden="true">
+                                <div class="dropdown-header">
+                                    <div class="dropdown-avatar" id="dropdownAvatar">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                    </div>
+                                    <div>
+                                        <p class="dropdown-name" id="dropdownName"></p>
+                                        <p class="dropdown-role" id="dropdownRole"></p>
+                                    </div>
+                                </div>
+                                <div class="dropdown-divider"></div>
+                                <a href="dashboard.html" class="dropdown-item" role="menuitem" id="dashboardLink">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+                                    </svg>
+                                    View Dashboard
+                                </a>
+                                <a href="login.html" class="dropdown-item" role="menuitem" id="addAccountLink">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/>
+                                    </svg>
+                                    Add Another Account
+                                </a>
+                                <button class="dropdown-item" role="menuitem" id="manageAccountsBtn">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                                    </svg>
+                                    Manage Accounts
+                                </button>
+                                <div class="dropdown-divider"></div>
+                                <button class="dropdown-item dropdown-item-danger" role="menuitem" id="logoutBtn">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+                                    </svg>
+                                    Logout
+                                </button>
+                            </div>
+                            <div class="user-dropdown accounts-panel" id="accountsPanel" role="menu" aria-hidden="true">
+                                <div class="dropdown-header">
+                                    <button class="btn btn-ghost accounts-back-btn" id="accountsBackBtn" aria-label="Back to menu">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                                        Back
+                                    </button>
+                                    <span class="accounts-panel-title">Switch Account</span>
+                                </div>
+                                <div class="accounts-list" id="accountsList"></div>
+                                <div class="dropdown-divider"></div>
+                                <a href="login.html" class="dropdown-item" role="menuitem">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                                    </svg>
+                                    Add New Account
+                                </a>
+                            </div>
+                        <div class="auth-buttons flex items-center gap-8" id="authButtons">
+                            <a href="login.html" class="btn btn-ghost"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Login</a>
+                        </div>
+
+                        <button class="mobile-menu-btn btn btn-ghost btn-icon" id="mobileMenuBtn" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileMenu">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <line x1="3" y1="12" x2="21" y2="12"/>
+                                <line x1="3" y1="6" x2="21" y2="6"/>
+                                <line x1="3" y1="18" x2="21" y2="18"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                </div>
+                    <div class="search-overlay" id="searchOverlay" role="search" aria-hidden="true">
+                        <div class="search-container">
+                            <div class="search-input-wrapper">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                    <circle cx="11" cy="11" r="8"/>
+                                    <path d="M21 21l-4.35-4.35"/>
+                                </svg>
+                                <input type="search" class="search-input" placeholder="Search auctions, categories, sellers..." aria-label="Search" autocomplete="off">
+                                <button class="search-close" aria-label="Close search">✕</button>
+                            </div>
+                            <div class="search-results" id="searchResults" role="listbox"></div>
+                            <div class="search-suggestions" id="searchSuggestions">
+                                <p class="search-hint">Popular: <span>Antique Jewelry</span>, <span>Vintage Watches</span>, <span>Art Paintings</span>, <span>Rare Coins</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <nav class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Mobile menu" aria-hidden="true">
+                        <div class="mobile-menu-header flex justify-between items-center">
+                            <span class="font-semibold">Menu</span>
+                            <button class="mobile-menu-close btn btn-ghost btn-icon" aria-label="Close menu">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                    <line x1="18" y1="6" x2="6" y2="18"/>
+                                    <line x1="6" y1="6" x2="18" y2="18"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <ul class="mobile-nav-list" role="list">
+                            <li><a href="index.html" class="mobile-nav-link">Home</a></li>
+                            <li><a href="categories.html" class="mobile-nav-link">Shop</a></li>
+                            <li><a href="live-bids.html" class="mobile-nav-link">Live Bids</a></li>
+                        </ul>
+                        <div class="mobile-menu-divider"></div>
+                        <div class="mobile-auth" id="mobileAuth">
+                            <a href="login.html" class="btn btn-primary btn-block">Login</a>
+                        </div>
+                        <div class="mobile-user hidden" id="mobileUser">
+                            <div class="mobile-user-info">
+                                <div class="mobile-user-avatar" id="mobileUserAvatar"></div>
+                                <div>
+                                    <p class="mobile-user-name" id="mobileUserName"></p>
+                                    <p class="mobile-user-role" id="mobileUserRole"></p>
+                                </div>
+                            </div>
+                            <a href="profile.html" class="mobile-nav-link">My Profile</a>
+                        <a href="dashboard.html" class="mobile-nav-link">Dashboard</a>
+                            <a href="my-bids.html" class="mobile-nav-link">My Bids</a>
+                            <a href="seller-dashboard.html" class="mobile-nav-link hidden" id="mobileSellerLink">Seller Dashboard</a>
+                            <a href="admin-dashboard.html" class="mobile-nav-link hidden" id="mobileAdminLink">Admin Dashboard</a>
+                            <button class="mobile-nav-link mobile-nav-link-danger w-full text-left" id="mobileLogoutBtn">Logout</button>
+                        </div>
+                    </nav>
+            </div>
+        </header>
+
+        <main id="main" role="main">
+            <div class="container">
+                <div class="card mb-16">
+                    <div class="flex items-center gap-16">
+                        <div class="user-avatar profile-avatar" id="dashAvatar" style="width:56px;height:56px;font-size:1.5rem;flex-shrink:0;">A</div>
+                        <div style="flex:1;">
+                            <p class="font-bold" id="dashUserName" style="font-size:1.125rem;margin-bottom:2px;">Account</p>
+                            <p class="text-secondary" id="dashUserRole" style="font-size:0.8125rem;">Customer</p>
+                        </div>
+                        <a href="profile.html" class="btn btn-ghost btn-sm">Edit Profile</a>
+                    </div>
+                </div>
+
+                <div class="grid grid-4 mb-16" id="dashboardStats">
+                    <div class="stat-card card text-center p-4">
+                        <p class="font-bold text-primary" id="statActiveBids">0</p>
+                        <p class="text-secondary">Active Bids</p>
+                    </div>
+                    <div class="stat-card card text-center p-4">
+                        <p class="font-bold text-success" id="statWonAuctions">0</p>
+                        <p class="text-secondary">Won Auctions</p>
+                    </div>
+                    <div class="stat-card card text-center p-4">
+                        <p class="font-bold text-warning" id="statPendingPayments">0</p>
+                        <p class="text-secondary">Pending Payments</p>
+                    </div>
+                    <div class="stat-card card text-center p-4">
+                        <p class="font-bold" id="statTotalSpent">₹0</p>
+                        <p class="text-secondary">Total Spent</p>
+                    </div>
+                </div>
+
+                <div class="grid dashboard-grid">
+                    <section class="card">
+                        <div class="card-header flex justify-between items-center">
+                            <h2 class="section-title mb-0">Recent Bidding Activity</h2>
+                            <a href="my-bids.html" class="btn btn-ghost btn-sm">View All</a>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-container" id="recentBidsTable">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Your Bid</th>
+                                            <th>Current Bid</th>
+                                            <th>Status</th>
+                                            <th>Time</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recentBidsBody">
+                                        <tr>
+                                            <td colspan="5" class="text-center py-16 text-secondary">Loading...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+
+                    <aside>
+                        <div class="card mb-24">
+                            <div class="card-header">
+                                <h2 class="section-title mb-0">Quick Actions</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="flex flex-col gap-12">
+                                    <a href="live-bids.html" class="btn btn-primary">Browse Live Auctions</a>
+                                    <a href="categories.html" class="btn btn-outline">Explore Categories</a>
+                                    <a href="live-bids.html?filter=upcoming" class="btn btn-ghost">Browse Upcoming Auctions</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-24" id="watchlistCard" style="display: none;">
+                            <div class="card-header">
+                                <h2 class="section-title mb-0">Watchlist</h2>
+                            </div>
+                            <div class="card-body">
+                                <div id="watchlistItems">
+                                    <p class="text-secondary text-center py-16">No items in watchlist</p>
+                                </div>
+                                <a href="my-bids.html#watchlist" class="btn btn-ghost btn-block btn-sm mt-16">Manage Watchlist</a>
+                            </div>
+                        </div>
+
+                        <div class="card" id="sellerQuickStats" style="display: none;">
+                            <div class="card-header">
+                                <h2 class="section-title mb-0">Your Listings</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="grid grid-2 gap-12 mb-16" id="sellerStatsMini">
+                                    <div class="stat-card card text-center p-4">
+                                        <p class="text-2xl font-bold text-primary" id="statMyListings">0</p>
+                                        <p class="text-secondary text-xs">Active</p>
+                                    </div>
+                                    <div class="stat-card card text-center p-4">
+                                        <p class="text-2xl font-bold text-success" id="statMySales">0</p>
+                                        <p class="text-secondary text-xs">Sold</p>
+                                    </div>
+                                </div>
+                                <a href="seller-dashboard.html" class="btn btn-primary btn-block">Manage Listings</a>
+                            </div>
+                        </div>
+
+                        <div class="card" id="adminQuickStats" style="display: none;">
+                            <div class="card-header">
+                                <h2 class="section-title mb-0">Admin Overview</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="grid grid-2 gap-12 mb-16" id="adminStatsMini">
+                                    <div class="stat-card card text-center p-4">
+                                        <p class="text-2xl font-bold text-primary" id="statTotalUsers">0</p>
+                                        <p class="text-secondary text-xs">Users</p>
+                                    </div>
+                                    <div class="stat-card card text-center p-4">
+                                        <p class="text-2xl font-bold text-success" id="statLiveAuctions">0</p>
+                                        <p class="text-secondary text-xs">Live Auctions</p>
+                                    </div>
+                                </div>
+                                <a href="admin-dashboard.html" class="btn btn-primary btn-block">Open Admin Panel</a>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+
+                <section class="card mt-16">
+                    <div class="card-header flex justify-between items-center">
+                        <h2 class="section-title mb-0">Recent Purchases</h2>
+                        <a href="my-bids.html#purchases" class="btn btn-ghost btn-sm">View All</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-container" id="purchasesTable">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Seller</th>
+                                        <th>Purchase Price</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="purchasesBody">
+                                    <tr>
+                                        <td colspan="5" class="text-center py-16 text-secondary">Loading...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <footer class="footer" role="contentinfo">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-brand">
+                        <a href="index.html" class="logo flex items-center gap-8">
+                            
+                            <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M8 12L16 8L24 12V20L16 24L8 20V12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 8V24M8 12L24 12M8 20L24 20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/></svg>
+                                <span class="logo-text font-bold text-xl">AuctionX</span>
+                        </a>
+                        <p class="footer-tagline">Premium auction marketplace for rare and valuable collectibles.</p>
+                        <div class="social-links flex gap-12">
+                            <a href="#" class="social-link" aria-label="Twitter"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
+                            <a href="#" class="social-link" aria-label="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+                            <a href="#" class="social-link" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+                        </div>
+                    </div>
+                    <nav class="footer-nav" aria-label="Footer navigation">
+                        <div class="footer-col">
+                            <h4 class="footer-title">Marketplace</h4>
+                            <ul role="list">
+                                <li><a href="categories.html">All Categories</a></li>
+                                <li><a href="live-bids.html">Live Auctions</a></li>
+                                <li><a href="seller-dashboard.html">Sell with Us</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+                <div class="footer-bottom">
+                        <p>&copy; 2024 AuctionX. All rights reserved.</p>
+                        <div class="social-links flex gap-12" style="justify-content: center; margin-top: 12px;">
+                            <a href="https://www.instagram.com/_jeevitha_.28/" target="_blank" class="social-link" aria-label="Instagram" title="Follow on Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+                            <a href="https://www.linkedin.com/in/r-s-jeevitha-raja-7692642b3?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" class="social-link" aria-label="LinkedIn" title="Connect on LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+                            <a href="https://github.com/jeevitha281103" target="_blank" class="social-link" aria-label="GitHub" title="View on GitHub"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
+                            <a href="mailto:jeevitharaja2811@gmail.com" class="social-link" aria-label="Email" title="Send Email"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+                            <a href="https://t.me/@Jeevitha_28_11" target="_blank" class="social-link" aria-label="Telegram" title="Join on Telegram"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></a>
+                        </div>
+                        <p class="footer-disclaimer" style="margin-top: 12px;">AuctionX is a marketplace platform. All items sold by third-party sellers.</p>
+                    </div>
+            </div>
+        </footer>
+
+        <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-hidden="true" style="display: none;">
+            <div class="modal" id="modal" role="document">
+                <div class="modal-header flex justify-between items-center">
+                    <h3 class="modal-title" id="modalTitle"></h3>
+                    <button class="modal-close btn btn-ghost btn-icon" aria-label="Close modal">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="modal-body" id="ModalBody"></div>
+                <div class="modal-footer" id="modalFooter"></div>
+            </div>
+        </div>
+
+        <div class="toast-container" id="toastContainer" aria-live="polite" aria-label="Notifications"></div>
+    </div>
+
+    <script src="data/auction-data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!App.currentUser) {
+                App.navigate('login.html');
+                return;
+            }
+
+            loadDashboard();
+        });
+
+        function loadDashboard() {
+            const user = App.currentUser;
+
+            document.getElementById('dashAvatar').textContent = user.name.charAt(0).toUpperCase();
+            document.getElementById('dashUserName').textContent = user.name;
+            document.getElementById('dashUserRole').textContent = user.role === 'seller' ? 'Seller' : user.role === 'admin' ? 'Admin' : 'Customer';
+
+            const activeBids = getUserBids(user.id).filter(b => {
+                const product = getProductById(b.productId);
+                return product && product.status === 'active';
+            });
+
+            const wonAuctions = user.purchases || [];
+            const pendingPayments = AuctionData.payments.filter(p => p.buyerId === user.id && p.status === 'pending');
+            const totalSpent = wonAuctions.reduce((sum, p) => sum + p.price, 0);
+
+            document.getElementById('statActiveBids').textContent = activeBids.length;
+            document.getElementById('statWonAuctions').textContent = wonAuctions.length;
+            document.getElementById('statPendingPayments').textContent = pendingPayments.length;
+            document.getElementById('statTotalSpent').textContent = App.formatCurrency(totalSpent);
+
+            loadRecentBids(user.id);
+            loadPurchases(user.id);
+
+            if (user.role === 'seller' || user.role === 'admin') {
+                document.getElementById('sellerQuickStats').style.display = 'block';
+                loadSellerStats(user.id);
+            }
+
+            if (user.role === 'admin') {
+                document.getElementById('adminQuickStats').style.display = 'block';
+                loadAdminStats();
+            }
+        }
+
+        function loadRecentBids(userId) {
+            const bids = getUserBids(userId).slice(0, 10);
+            const tbody = document.getElementById('recentBidsBody');
+
+            if (bids.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center py-16 text-secondary">No bidding activity yet</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = bids.map(bid => {
+                const product = getProductById(bid.productId);
+                if (!product) return '';
+
+                const isHighest = product.highestBidderId === userId;
+                const status = product.status === 'active' ? (isHighest ? 'Winning' : 'Outbid') :
+                              product.status === 'sold_pending_payment' ? 'Payment Pending' :
+                              product.status === 'sold' ? (isHighest ? 'Won' : 'Lost') :
+                              product.status;
+
+                const statusBadge = product.status === 'active' ? (isHighest ? 'badge-success' : 'badge-warning') :
+                                   product.status === 'sold_pending_payment' ? 'badge-warning' :
+                                   product.status === 'sold' ? (isHighest ? 'badge-success' : 'badge-error') :
+                                   'badge-info';
+
+                return `
+                    <tr>
+                        <td>
+                            <a href="product.html?id=${product.id}" class="font-medium hover:text-primary">${product.name}</a>
+                        </td>
+                        <td class="font-semibold">${App.formatCurrency(bid.amount)}</td>
+                        <td>${App.formatCurrency(product.currentBid)}</td>
+                        <td><span class="badge ${statusBadge}">${status}</span></td>
+                        <td class="text-secondary">${App.formatDateTime(bid.timestamp)}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function loadPurchases(userId) {
+            const user = getUserById(userId);
+            const purchases = user?.purchases || [];
+            const tbody = document.getElementById('purchasesBody');
+
+            if (purchases.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center py-16 text-secondary">No purchases yet</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = purchases.slice(0, 10).map(purchase => {
+                const product = getProductById(purchase.productId);
+                return `
+                    <tr>
+                        <td>
+                            <a href="product.html?id=${purchase.productId}" class="font-medium hover:text-primary">${purchase.productName}</a>
+                        </td>
+                        <td>${purchase.sellerName || 'Unknown'}</td>
+                        <td class="font-semibold">${App.formatCurrency(purchase.price)}</td>
+                        <td class="text-secondary">${App.formatDate(purchase.purchasedAt)}</td>
+                        <td><span class="badge badge-success">Completed</span></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function loadSellerStats(sellerId) {
+            const products = getProductsBySeller(sellerId);
+            const activeListings = products.filter(p => p.status === 'active' || p.status === 'pending').length;
+            const soldItems = products.filter(p => p.status === 'sold').length;
+            const totalEarnings = products.filter(p => p.status === 'sold').reduce((sum, p) => sum + p.currentBid, 0);
+
+            document.getElementById('statMyListings').textContent = activeListings;
+            document.getElementById('statMySales').textContent = soldItems;
+        }
+
+        function loadAdminStats() {
+            const totalUsers = AuctionData.users.length;
+            const activeAuctions = AuctionData.products.filter(p => p.status === 'active').length;
+
+            document.getElementById('statTotalUsers').textContent = totalUsers;
+            document.getElementById('statLiveAuctions').textContent = activeAuctions;
+        }
+    </script>
+</body>
+</html>

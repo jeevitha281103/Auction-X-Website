@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Browse all categories on AuctionX - Fine Art, Antique Furniture, Antique Jewellery, Collectibles, and Decorative Arts">
+    <title>Categories - AuctionX</title>
+
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+    <div id="app">
+        <header class="header" id="header" role="banner">
+            <div class="container">
+                <div class="header-inner flex justify-between items-center">
+                    <a href="index.html" class="logo flex items-center gap-8" aria-label="AuctionX Home">
+                        
+                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M8 12L16 8L24 12V20L16 24L8 20V12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 8V24M8 12L24 12M8 20L24 20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/></svg>
+                                <span class="logo-text font-bold text-xl">AuctionX</span>
+                    </a>
+
+                    <nav class="nav-main flex items-center gap-8" id="navMain" role="navigation" aria-label="Main navigation">
+                        <a href="index.html" class="nav-link">Home</a>
+                        <a href="categories.html" class="nav-link active">Shop</a>
+                        <a href="live-bids.html" class="nav-link">Live Bids</a>
+                        <a href="dashboard.html" class="nav-link">Dashboard</a>
+                    </nav>
+
+                    <div class="header-actions flex items-center gap-12" id="headerActions">
+                        <button class="btn btn-ghost btn-icon header-search-btn" id="searchToggle" aria-label="Search" aria-expanded="false">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <circle cx="11" cy="11" r="8"/>
+                                <path d="M21 21l-4.35-4.35"/>
+                            </svg>
+                        </button>
+
+
+
+                                                <div class="user-menu hidden" id="userMenu">
+                            <button class="btn btn-ghost user-menu-btn" id="userMenuBtn" aria-expanded="false" aria-haspopup="true" aria-label="User menu">
+                                <div class="user-avatar" id="userAvatar">A</div>
+                                <span class="user-first-name" id="userName">Account</span>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                    <path d="M6 9l6 6 6-6"/>
+                                </svg>
+                            </button>
+                            <div class="user-dropdown" id="userDropdown" role="menu" aria-hidden="true">
+                                <div class="dropdown-header">
+                                    <div class="dropdown-avatar" id="dropdownAvatar">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                    </div>
+                                    <div>
+                                        <p class="dropdown-name" id="dropdownName"></p>
+                                        <p class="dropdown-role" id="dropdownRole"></p>
+                                    </div>
+                                </div>
+                                <div class="dropdown-divider"></div>
+                                <a href="dashboard.html" class="dropdown-item" role="menuitem" id="dashboardLink">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+                                    </svg>
+                                    View Dashboard
+                                </a>
+                                <a href="login.html" class="dropdown-item" role="menuitem" id="addAccountLink">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/>
+                                    </svg>
+                                    Add Another Account
+                                </a>
+                                <button class="dropdown-item" role="menuitem" id="manageAccountsBtn">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                                    </svg>
+                                    Manage Accounts
+                                </button>
+                                <div class="dropdown-divider"></div>
+                                <button class="dropdown-item dropdown-item-danger" role="menuitem" id="logoutBtn">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+                                    </svg>
+                                    Logout
+                                </button>
+                            </div>
+                            <div class="user-dropdown accounts-panel" id="accountsPanel" role="menu" aria-hidden="true">
+                                <div class="dropdown-header">
+                                    <button class="btn btn-ghost accounts-back-btn" id="accountsBackBtn" aria-label="Back to menu">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                                        Back
+                                    </button>
+                                    <span class="accounts-panel-title">Switch Account</span>
+                                </div>
+                                <div class="accounts-list" id="accountsList"></div>
+                                <div class="dropdown-divider"></div>
+                                <a href="login.html" class="dropdown-item" role="menuitem">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                                    </svg>
+                                    Add New Account
+                                </a>
+                            </div>
+                        <div class="auth-buttons flex items-center gap-8" id="authButtons">
+                            <a href="login.html" class="btn btn-ghost"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Login</a>
+                        </div>
+
+                        <button class="mobile-menu-btn btn btn-ghost btn-icon" id="mobileMenuBtn" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileMenu">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <line x1="3" y1="12" x2="21" y2="12"/>
+                                <line x1="3" y1="6" x2="21" y2="6"/>
+                                <line x1="3" y1="18" x2="21" y2="18"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="search-overlay" id="searchOverlay" role="search" aria-hidden="true">
+                    <div class="search-container">
+                        <div class="search-input-wrapper">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <circle cx="11" cy="11" r="8"/>
+                                <path d="M21 21l-4.35-4.35"/>
+                            </svg>
+                            <input type="search" class="search-input" placeholder="Search auctions, categories, sellers..." aria-label="Search" autocomplete="off">
+                            <button class="search-close" aria-label="Close search">✕</button>
+                        </div>
+                        <div class="search-results" id="searchResults" role="listbox"></div>
+                        <div class="search-suggestions" id="searchSuggestions">
+                            <p class="search-hint">Popular: <span>Antique Jewelry</span>, <span>Vintage Watches</span>, <span>Art Paintings</span>, <span>Rare Coins</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <nav class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Mobile menu" aria-hidden="true">
+                    <div class="mobile-menu-header flex justify-between items-center">
+                        <span class="font-semibold">Menu</span>
+                        <button class="mobile-menu-close btn btn-ghost btn-icon" aria-label="Close menu">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <line x1="18" y1="6" x2="6" y2="18"/>
+                                <line x1="6" y1="6" x2="18" y2="18"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <ul class="mobile-nav-list" role="list">
+                        <li><a href="index.html" class="mobile-nav-link">Home</a></li>
+                        <li><a href="categories.html" class="mobile-nav-link">Shop</a></li>
+                        <li><a href="live-bids.html" class="mobile-nav-link">Live Bids</a></li>
+                    </ul>
+                    <div class="mobile-menu-divider"></div>
+                    <div class="mobile-auth" id="mobileAuth">
+                        <a href="login.html" class="btn btn-primary btn-block">Login</a>
+                        </div>
+                    <div class="mobile-user hidden" id="mobileUser">
+                        <div class="mobile-user-info">
+                            <div class="mobile-user-avatar" id="mobileUserAvatar"></div>
+                            <div>
+                                <p class="mobile-user-name" id="mobileUserName"></p>
+                                <p class="mobile-user-role" id="mobileUserRole"></p>
+                            </div>
+                        </div>
+                        <a href="profile.html" class="mobile-nav-link">My Profile</a>
+                        <a href="dashboard.html" class="mobile-nav-link">Dashboard</a>
+                        <a href="my-bids.html" class="mobile-nav-link">My Bids</a>
+                        <a href="seller-dashboard.html" class="mobile-nav-link hidden" id="mobileSellerLink">Seller Dashboard</a>
+                        <a href="admin-dashboard.html" class="mobile-nav-link hidden" id="mobileAdminLink">Admin Dashboard</a>
+                        <button class="mobile-nav-link mobile-nav-link-danger w-full text-left" id="mobileLogoutBtn">Logout</button>
+                    </div>
+                </nav>
+            </div>
+        </header>
+
+        <main id="main" role="main">
+            <div class="container">
+                <div class="page-header" style="margin-bottom: 32px;">
+                    <h1 class="page-title">Browse Categories</h1>
+                    <p class="page-subtitle">Explore our curated collections of authenticated antiques</p>
+                    <div class="flex gap-16 mt-8" style="font-size: 0.875rem; color: var(--text-secondary);">
+                        <span>🔴 <strong id="liveAuctionCount">0</strong> Live Auctions</span>
+                        <span>🟡 <strong id="upcomingAuctionCount">0</strong> Upcoming</span>
+                    </div>
+                </div>
+
+                <div class="grid mb-32" id="categoryCards" style="grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 24px;">
+                    <a href="categories.html?category=fine_art" class="category-card-large card cursor-pointer" data-category="fine_art" style="text-decoration: none; color: inherit;">
+                        <div class="category-card-header">
+                            <div class="category-icon-large" style="background: linear-gradient(135deg, #8B4513, #A0522D);">
+                                <span aria-hidden="true" style="font-size: 3rem;">🖼️</span>
+                            </div>
+                            <div>
+                                <h2 class="category-name">Fine Art</h2>
+                                <p class="category-description">Oil paintings, watercolors, sketches by listed historic artists, bronze and marble sculptures, Chinese ceramics, jade, lacquerware, and Japanese woodblock prints.</p>
+                            </div>
+                        </div>
+                        <div class="category-card-stats">
+                            <div class="stat">
+                                <span class="stat-value" id="fineArtCount">0</span>
+                                <span class="stat-label">Items</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value" id="fineArtLive">0</span>
+                                <span class="stat-label">Live Auctions</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value" id="fineArtPrice">₹0</span>
+                                <span class="stat-label">Min. Bid</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="categories.html?category=antique_furniture" class="category-card-large card cursor-pointer" data-category="antique_furniture" style="text-decoration: none; color: inherit;">
+                        <div class="category-card-header">
+                            <div class="category-icon-large" style="background: linear-gradient(135deg, #6B4226, #8B5A2B);">
+                                <span aria-hidden="true" style="font-size: 3rem;">🪑</span>
+                            </div>
+                            <div>
+                                <h2 class="category-name">Antique Furniture</h2>
+                                <p class="category-description">Dining sets, cabinets, and seating from Renaissance, Victorian, and Art Deco eras. Ornate gilded mirrors, grandfather clocks, and carriage clocks.</p>
+                            </div>
+                        </div>
+                        <div class="category-card-stats">
+                            <div class="stat">
+                                <span class="stat-value" id="furnitureCount">0</span>
+                                <span class="stat-label">Items</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value" id="furnitureLive">0</span>
+                                <span class="stat-label">Live Auctions</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value" id="furniturePrice">₹0</span>
+                                <span class="stat-label">Min. Bid</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="categories.html?category=antique_jewellery" class="category-card-large card cursor-pointer" data-category="antique_jewellery" style="text-decoration: none; color: inherit;">
+                        <div class="category-card-header">
+                            <div class="category-icon-large" style="background: linear-gradient(135deg, #B8860B, #DAA520);">
+                                <span aria-hidden="true" style="font-size: 3rem;">💍</span>
+                            </div>
+                            <div>
+                                <h2 class="category-name">Antique Jewellery</h2>
+                                <p class="category-description">Period jewelry, precious stones, branded luxury items, polished silver trays and tea sets, rare antique pocket watches and vintage timepieces.</p>
+                            </div>
+                        </div>
+                        <div class="category-card-stats">
+                            <div class="stat">
+                                <span class="stat-value" id="jewelryCount">0</span>
+                                <span class="stat-label">Items</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value" id="jewelryLive">0</span>
+                                <span class="stat-label">Live Auctions</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value" id="jewelryPrice">₹0</span>
+                                <span class="stat-label">Min. Bid</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="categories.html?category=collectibles" class="category-card-large card cursor-pointer" data-category="collectibles" style="text-decoration: none; color: inherit;">
+                        <div class="category-card-header">
+                            <div class="category-icon-large" style="background: linear-gradient(135deg, #C0C0C0, #A9A9A9);">
+                                <span aria-hidden="true" style="font-size: 3rem;">🪙</span>
+                            </div>
+                            <div>
+                                <h2 class="category-name">Collectibles</h2>
+                                <p class="category-description">Rare gold coins, proof sets, historical military medals, rare philatelic gems, tin toys, vintage vinyl records, and comic books.</p>
+                            </div>
+                        </div>
+                        <div class="category-card-stats">
+                            <div class="stat">
+                                <span class="stat-value" id="collectiblesCount">0</span>
+                                <span class="stat-label">Items</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value" id="collectiblesLive">0</span>
+                                <span class="stat-label">Live Auctions</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value" id="collectiblesPrice">₹0</span>
+                                <span class="stat-label">Min. Bid</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="categories.html?category=decorative_arts" class="category-card-large card cursor-pointer" data-category="decorative_arts" style="text-decoration: none; color: inherit;">
+                        <div class="category-card-header">
+                            <div class="category-icon-large" style="background: linear-gradient(135deg, #4682B4, #5F9EA0);">
+                                <span aria-hidden="true" style="font-size: 3rem;">🏺</span>
+                            </div>
+                            <div>
+                                <h2 class="category-name">Decorative Arts</h2>
+                                <p class="category-description">Cut glass, crystal serving ware, Wedgwood porcelain, vintage quilts, silk tapestries, designer handbags, antique microscopes, and telescopes.</p>
+                            </div>
+                        </div>
+                        <div class="category-card-stats">
+                            <div class="stat">
+                                <span class="stat-value" id="decorativeCount">0</span>
+                                <span class="stat-label">Items</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value" id="decorativeLive">0</span>
+                                <span class="stat-label">Live Auctions</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value" id="decorativePrice">₹0</span>
+                                <span class="stat-label">Min. Bid</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <section class="category-products" id="categoryProductsSection" style="display: none;">
+                    <div class="flex justify-between items-center mb-24">
+                        <div>
+                            <a href="categories.html" class="btn btn-ghost btn-sm mb-16">← Back to Categories</a>
+                            <h2 class="section-title" id="categoryProductsTitle"></h2>
+                        </div>
+                        <div class="flex gap-12">
+                            <select class="form-input" id="sortSelect" style="width: auto; min-width: 200px;">
+                                <option value="ending-soon">Ending Soon</option>
+                                <option value="newest">Newest First</option>
+                                <option value="price-low">Price: Low to High</option>
+                                <option value="price-high">Price: High to Low</option>
+                                <option value="most-bids">Most Bids</option>
+                            </select>
+                            <select class="form-input" id="statusFilter" style="width: auto; min-width: 180px;">
+                                <option value="all">All Status</option>
+                                <option value="active">Live Now</option>
+                                <option value="pending">Upcoming</option>
+                                <option value="sold">Sold</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-3" id="categoryProductsGrid">
+                        <div class="page-loader flex justify-center items-center" style="grid-column: 1/-1; min-height: 300px;">
+                            <div class="spinner-lg" style="color: var(--primary);"></div>
+                        </div>
+                    </div>
+
+                    <div class="pagination flex justify-center gap-8 mt-32" id="pagination">
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <footer class="footer" role="contentinfo">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-brand">
+                        <a href="index.html" class="logo flex items-center gap-8">
+                            
+                            <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M8 12L16 8L24 12V20L16 24L8 20V12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 8V24M8 12L24 12M8 20L24 20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/></svg>
+                                <span class="logo-text font-bold text-xl">AuctionX</span>
+                        </a>
+                        <p class="footer-tagline">Premium auction marketplace for rare and valuable collectibles.</p>
+                        <div class="social-links flex gap-12">
+                            <a href="#" class="social-link" aria-label="Twitter"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
+                            <a href="#" class="social-link" aria-label="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+                            <a href="#" class="social-link" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+                        </div>
+                    </div>
+                    <nav class="footer-nav" aria-label="Footer navigation">
+                        <div class="footer-col">
+                            <h4 class="footer-title">Marketplace</h4>
+                            <ul role="list">
+                                <li><a href="categories.html">All Categories</a></li>
+                                <li><a href="live-bids.html">Live Auctions</a></li>
+                                <li><a href="seller-dashboard.html">Sell with Us</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+                <div class="footer-bottom">
+                        <p>&copy; 2024 AuctionX. All rights reserved.</p>
+                        <div class="social-links flex gap-12" style="justify-content: center; margin-top: 12px;">
+                            <a href="https://www.instagram.com/_jeevitha_.28/" target="_blank" class="social-link" aria-label="Instagram" title="Follow on Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+                            <a href="https://www.linkedin.com/in/r-s-jeevitha-raja-7692642b3?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" class="social-link" aria-label="LinkedIn" title="Connect on LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+                            <a href="https://github.com/jeevitha281103" target="_blank" class="social-link" aria-label="GitHub" title="View on GitHub"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
+                            <a href="mailto:jeevitharaja2811@gmail.com" class="social-link" aria-label="Email" title="Send Email"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+                            <a href="https://t.me/@Jeevitha_28_11" target="_blank" class="social-link" aria-label="Telegram" title="Join on Telegram"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></a>
+                        </div>
+                        <p class="footer-disclaimer" style="margin-top: 12px;">AuctionX is a marketplace platform. All items sold by third-party sellers.</p>
+                    </div>
+            </div>
+        </footer>
+
+        <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-hidden="true" style="display: none;">
+            <div class="modal" id="modal" role="document">
+                <div class="modal-header flex justify-between items-center">
+                    <h3 class="modal-title" id="modalTitle"></h3>
+                    <button class="modal-close btn btn-ghost btn-icon" aria-label="Close modal">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="modal-body" id="ModalBody"></div>
+                <div class="modal-footer" id="modalFooter"></div>
+            </div>
+        </div>
+
+        <div class="toast-container" id="toastContainer" aria-live="polite" aria-label="Notifications"></div>
+    </div>
+
+    <script src="data/auction-data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const categoryParam = params.get('category');
+
+            try { loadCategoryStats(); } catch (err) { console.error('loadCategoryStats error:', err); }
+
+            if (categoryParam) {
+                showCategoryProducts(categoryParam);
+            }
+        });
+
+        function loadCategoryStats() {
+            const products = AuctionData.products || [];
+            const liveCount = products.filter(p => p.status === 'active').length;
+            const upcomingCount = products.filter(p => p.status === 'pending').length;
+            const liveEl = document.getElementById('liveAuctionCount');
+            const upcomingEl = document.getElementById('upcomingAuctionCount');
+            if (liveEl) liveEl.textContent = liveCount;
+            if (upcomingEl) upcomingEl.textContent = upcomingCount;
+
+            const statMap = {
+                fine_art: { count: 'fineArtCount', live: 'fineArtLive', price: 'fineArtPrice' },
+                antique_furniture: { count: 'furnitureCount', live: 'furnitureLive', price: 'furniturePrice' },
+                antique_jewellery: { count: 'jewelryCount', live: 'jewelryLive', price: 'jewelryPrice' },
+                collectibles: { count: 'collectiblesCount', live: 'collectiblesLive', price: 'collectiblesPrice' },
+                decorative_arts: { count: 'decorativeCount', live: 'decorativeLive', price: 'decorativePrice' }
+            };
+
+            Object.entries(statMap).forEach(([catId, ids]) => {
+                const catProducts = products.filter(p => p.category === catId);
+                const liveProducts = catProducts.filter(p => p.status === 'active');
+                const minPrice = catProducts.length > 0 ? Math.min(...catProducts.map(p => p.startingBid)) : 0;
+
+                const countEl = document.getElementById(ids.count);
+                const liveEl = document.getElementById(ids.live);
+                const priceEl = document.getElementById(ids.price);
+                if (countEl) countEl.textContent = catProducts.length;
+                if (liveEl) liveEl.textContent = liveProducts.length;
+                if (priceEl) priceEl.textContent = formatCurrency(minPrice);
+            });
+        }
+
+        function showCategoryProducts(categoryId) {
+            const category = AuctionData.categories.find(c => c.id === categoryId);
+            if (!category) {
+                console.error('Category not found:', categoryId);
+                return;
+            }
+
+            document.getElementById('categoryCards').style.display = 'none';
+            document.getElementById('categoryProductsSection').style.display = 'block';
+            document.getElementById('categoryProductsTitle').textContent = category.name;
+
+            renderCategoryProducts(categoryId);
+            initFilters(categoryId);
+        }
+
+        let currentProducts = [];
+        let currentPage = 1;
+        const productsPerPage = 9;
+
+        function renderCategoryProducts(categoryId, sort = 'ending-soon', status = 'all') {
+            let products = getProductsByCategory(categoryId);
+
+            if (status !== 'all') {
+                products = products.filter(p => p.status === status);
+            }
+
+            products.sort((a, b) => {
+                switch (sort) {
+                    case 'ending-soon':
+                        if (a.status === 'active' && b.status === 'active') {
+                            return new Date(a.endTime) - new Date(b.endTime);
+                        }
+                        return a.status === 'active' ? -1 : 1;
+                    case 'newest':
+                        return new Date(b.createdAt) - new Date(a.createdAt);
+                    case 'price-low':
+                        return a.currentBid - b.currentBid;
+                    case 'price-high':
+                        return b.currentBid - a.currentBid;
+                    case 'most-bids':
+                        return b.bidHistory.length - a.bidHistory.length;
+                    default:
+                        return 0;
+                }
+            });
+
+            currentProducts = products;
+            currentPage = 1;
+            renderProductsGrid();
+            renderPagination();
+        }
+
+        function renderProductsGrid() {
+            const grid = document.getElementById('categoryProductsGrid');
+            const start = (currentPage - 1) * productsPerPage;
+            const end = start + productsPerPage;
+            const pageProducts = currentProducts.slice(start, end);
+
+            if (pageProducts.length === 0) {
+                grid.innerHTML = `
+                    <div class="text-center py-32" style="grid-column: 1/-1;">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom: 16px; opacity: 0.5;" aria-hidden="true">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="M21 21l-4.35-4.35"/>
+                        </svg>
+                        <p class="text-secondary">No products found matching your criteria</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = pageProducts.map(product => `
+                <article class="product-card card" data-product-id="${product.id}">
+                    <a href="product.html?id=${product.id}" class="product-card-link">
+                        <div class="product-image-wrapper">
+                            ${product.images && product.images[0] 
+                                ? `<img src="${product.images[0]}" alt="${App.escapeHtml(product.name)}" class="product-image" loading="lazy">`
+                                : `<div class="product-image-placeholder" aria-hidden="true">${App.getCategoryIcon(product.category)}</div>`
+                            }
+                            <div class="product-badge-container">
+                                <span class="badge ${App.getStatusBadgeClass(product.status)} product-status-badge">${App.getStatusLabel(product.status)}</span>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-meta">
+                                <span class="product-category">${App.getCategoryName(product.category)}</span>
+                            </div>
+                            <h3 class="product-title">${App.escapeHtml(product.name)}</h3>
+                            <p class="product-description">${App.escapeHtml(product.description.substring(0, 100))}...</p>
+                            <div class="product-bid-info">
+                                <div>
+                                    <span class="product-current-bid">${App.formatCurrency(product.currentBid)}</span>
+                                    <span class="product-bid-count">${product.bidHistory.length} bids</span>
+                                </div>
+                                <span class="badge badge-info product-time-remaining">${product.status === 'active' && product.endTime ? App.getTimeRemaining(product.endTime) : App.getStatusLabel(product.status)}</span>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="product-actions">
+                        ${product.status === 'active' ? `
+                            <button class="btn btn-primary place-bid-btn" data-product-id="${product.id}">Place Bid</button>
+                        ` : product.status === 'pending' ? `
+                            <button class="btn btn-outline place-bid-btn" data-product-id="${product.id}" disabled>Coming Soon</button>
+                        ` : `
+                            <button class="btn btn-outline place-bid-btn" data-product-id="${product.id}" disabled>${App.getStatusLabel(product.status)}</button>
+                        `}
+                    </div>
+                </article>
+            `).join('');
+
+            App.initProductCards();
+        }
+
+        function renderPagination() {
+            const pagination = document.getElementById('pagination');
+            const totalPages = Math.ceil(currentProducts.length / productsPerPage);
+
+            if (totalPages <= 1) {
+                pagination.innerHTML = '';
+                return;
+            }
+
+            let html = '';
+            if (currentPage > 1) {
+                html += `<button class="btn btn-outline btn-sm" data-page="${currentPage - 1}">← Previous</button>`;
+            }
+
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                    html += `<button class="btn ${i === currentPage ? 'btn-primary' : 'btn-outline'} btn-sm" data-page="${i}" ${i === currentPage ? 'aria-current="page"' : ''}>${i}</button>`;
+                } else if (i === currentPage - 2 || i === currentPage + 2) {
+                    html += `<span class="btn btn-ghost btn-sm" aria-hidden="true">...</span>`;
+                }
+            }
+
+            if (currentPage < totalPages) {
+                html += `<button class="btn btn-outline btn-sm" data-page="${currentPage + 1}">Next →</button>`;
+            }
+
+            pagination.innerHTML = html;
+
+            pagination.querySelectorAll('[data-page]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    currentPage = parseInt(btn.dataset.page);
+                    renderProductsGrid();
+                    renderPagination();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            });
+        }
+
+        function initFilters(categoryId) {
+            document.getElementById('sortSelect')?.addEventListener('change', (e) => {
+                renderCategoryProducts(categoryId, e.target.value, document.getElementById('statusFilter').value);
+            });
+
+            document.getElementById('statusFilter')?.addEventListener('change', (e) => {
+                renderCategoryProducts(categoryId, document.getElementById('sortSelect').value, e.target.value);
+            });
+        }
+    </script>
+
+    <style>
+        a.category-card-large {
+            display: block;
+        }
+        .category-card-large {
+            transition: var(--transition);
+            border: 2px solid var(--border);
+        }
+
+        .category-card-large:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .category-card-header {
+            display: flex;
+            gap: 24px;
+            padding: 32px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .category-icon-large {
+            width: 96px;
+            height: 96px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .category-name {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .category-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .category-card-stats {
+            display: flex;
+            padding: 24px 32px;
+            background: var(--background);
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+        }
+
+        .stat {
+            flex: 1;
+            text-align: center;
+        }
+
+        .stat:not(:last-child) {
+            border-right: 1px solid var(--border);
+        }
+
+        .stat-value {
+            display: block;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            display: block;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .category-products-section {
+            animation: fadeIn 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .category-card-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .category-icon-large {
+                width: 80px;
+                height: 80px;
+            }
+
+            .category-card-stats {
+                flex-wrap: wrap;
+            }
+
+            .stat {
+                flex: 1 0 50%;
+                padding: 16px 0;
+            }
+
+            .stat:not(:last-child) {
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .stat:nth-last-child(-n+3) {
+                border-bottom: none;
+            }
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Complete your payment for the won auction on AuctionX">
+    <title>Payment - AuctionX</title>
+
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+    <div id="app">
+        <header class="header" id="header" role="banner">
+            <div class="container">
+                <div class="header-inner flex justify-between items-center">
+                    <a href="index.html" class="logo flex items-center gap-8" aria-label="AuctionX Home">
+                        
+                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M8 12L16 8L24 12V20L16 24L8 20V12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 8V24M8 12L24 12M8 20L24 20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/></svg>
+                                <span class="logo-text font-bold text-xl">AuctionX</span>
+                    </a>
+
+                    <nav class="nav-main flex items-center gap-8" id="navMain" role="navigation" aria-label="Main navigation">
+                        <a href="index.html" class="nav-link">Home</a>
+                        <a href="categories.html" class="nav-link">Shop</a>
+                        <a href="live-bids.html" class="nav-link">Live Bids</a>
+                        <a href="dashboard.html" class="nav-link">Dashboard</a>
+                        
+                    </nav>
+
+                    <div class="header-actions flex items-center gap-12" id="headerActions">
+                        <button class="btn btn-ghost btn-icon header-search-btn" id="searchToggle" aria-label="Search" aria-expanded="false">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <circle cx="11" cy="11" r="8"/>
+                                <path d="M21 21l-4.35-4.35"/>
+                            </svg>
+                        </button>
+
+
+
+                                                <div class="user-menu hidden" id="userMenu">
+                            <button class="btn btn-ghost user-menu-btn" id="userMenuBtn" aria-expanded="false" aria-haspopup="true" aria-label="User menu">
+                                <div class="user-avatar" id="userAvatar">A</div>
+                                <span class="user-first-name" id="userName">Account</span>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                    <path d="M6 9l6 6 6-6"/>
+                                </svg>
+                            </button>
+                            <div class="user-dropdown" id="userDropdown" role="menu" aria-hidden="true">
+                                <div class="dropdown-header">
+                                    <div class="dropdown-avatar" id="dropdownAvatar">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                    </div>
+                                    <div>
+                                        <p class="dropdown-name" id="dropdownName"></p>
+                                        <p class="dropdown-role" id="dropdownRole"></p>
+                                    </div>
+                                </div>
+                                <div class="dropdown-divider"></div>
+                                <a href="dashboard.html" class="dropdown-item" role="menuitem" id="dashboardLink">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+                                    </svg>
+                                    View Dashboard
+                                </a>
+                                <a href="login.html" class="dropdown-item" role="menuitem" id="addAccountLink">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/>
+                                    </svg>
+                                    Add Another Account
+                                </a>
+                                <button class="dropdown-item" role="menuitem" id="manageAccountsBtn">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                                    </svg>
+                                    Manage Accounts
+                                </button>
+                                <div class="dropdown-divider"></div>
+                                <button class="dropdown-item dropdown-item-danger" role="menuitem" id="logoutBtn">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+                                    </svg>
+                                    Logout
+                                </button>
+                            </div>
+                            <div class="user-dropdown accounts-panel" id="accountsPanel" role="menu" aria-hidden="true">
+                                <div class="dropdown-header">
+                                    <button class="btn btn-ghost accounts-back-btn" id="accountsBackBtn" aria-label="Back to menu">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                                        Back
+                                    </button>
+                                    <span class="accounts-panel-title">Switch Account</span>
+                                </div>
+                                <div class="accounts-list" id="accountsList"></div>
+                                <div class="dropdown-divider"></div>
+                                <a href="login.html" class="dropdown-item" role="menuitem">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                                    </svg>
+                                    Add New Account
+                                </a>
+                            </div>
+                        <div class="auth-buttons flex items-center gap-8" id="authButtons">
+                            <a href="login.html" class="btn btn-ghost"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Login</a>
+                        </div>
+
+                        <button class="mobile-menu-btn btn btn-ghost btn-icon" id="mobileMenuBtn" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileMenu">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <line x1="3" y1="12" x2="21" y2="12"/>
+                                <line x1="3" y1="6" x2="21" y2="6"/>
+                                <line x1="3" y1="18" x2="21" y2="18"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="search-overlay" id="searchOverlay" role="search" aria-hidden="true">
+                    <div class="search-container">
+                        <div class="search-input-wrapper">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <circle cx="11" cy="11" r="8"/>
+                                <path d="M21 21l-4.35-4.35"/>
+                            </svg>
+                            <input type="search" class="search-input" placeholder="Search auctions, categories, sellers..." aria-label="Search" autocomplete="off">
+                            <button class="search-close" aria-label="Close search">✕</button>
+                        </div>
+                        <div class="search-results" id="searchResults" role="listbox"></div>
+                        <div class="search-suggestions" id="searchSuggestions">
+                            <p class="search-hint">Popular: <span>Antique Jewelry</span>, <span>Vintage Watches</span>, <span>Art Paintings</span>, <span>Rare Coins</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <nav class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Mobile menu" aria-hidden="true">
+                    <div class="mobile-menu-header flex justify-between items-center">
+                        <span class="font-semibold">Menu</span>
+                        <button class="mobile-menu-close btn btn-ghost btn-icon" aria-label="Close menu">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <line x1="18" y1="6" x2="6" y2="18"/>
+                                <line x1="6" y1="6" x2="18" y2="18"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <ul class="mobile-nav-list" role="list">
+                        <li><a href="index.html" class="mobile-nav-link">Home</a></li>
+                        <li><a href="categories.html" class="mobile-nav-link">Shop</a></li>
+                        <li><a href="live-bids.html" class="mobile-nav-link">Live Bids</a></li>
+                    </ul>
+                    <div class="mobile-menu-divider"></div>
+                    <div class="mobile-auth" id="mobileAuth">
+                        <a href="login.html" class="btn btn-primary btn-block">Login</a>
+                        </div>
+                    <div class="mobile-user hidden" id="mobileUser">
+                        <div class="mobile-user-info">
+                            <div class="mobile-user-avatar" id="mobileUserAvatar"></div>
+                            <div>
+                                <p class="mobile-user-name" id="mobileUserName"></p>
+                                <p class="mobile-user-role" id="mobileUserRole"></p>
+                            </div>
+                        </div>
+                        <a href="profile.html" class="mobile-nav-link">My Profile</a>
+                        <a href="dashboard.html" class="mobile-nav-link">Dashboard</a>
+                        <a href="my-bids.html" class="mobile-nav-link">My Bids</a>
+                        <a href="seller-dashboard.html" class="mobile-nav-link hidden" id="mobileSellerLink">Seller Dashboard</a>
+                        <a href="admin-dashboard.html" class="mobile-nav-link hidden" id="mobileAdminLink">Admin Dashboard</a>
+                        <button class="mobile-nav-link mobile-nav-link-danger w-full text-left" id="mobileLogoutBtn">Logout</button>
+                    </div>
+                </nav>
+            </div>
+        </header>
+
+        <main id="main" role="main">
+            <div class="container">
+                <div class="page-header">
+                    <h1 class="page-title">Complete Payment</h1>
+                    <p class="page-subtitle">Securely pay for your won auction item</p>
+                </div>
+
+                <div class="grid form-grid">
+                    <div class="payment-form-container">
+                        <div class="card" id="paymentFormCard">
+                            <div class="card-header">
+                                <h2 class="section-title mb-0">Payment Details</h2>
+                            </div>
+                            <div class="card-body">
+                                <form data-form="payment" id="paymentForm" novalidate>
+                                    <input type="hidden" name="paymentId" id="paymentId">
+                                    <input type="hidden" name="productId" id="paymentProductId">
+
+                                    <div class="alert alert-info mb-24">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                            <circle cx="12" cy="12" r="10"/>
+                                            <line x1="12" y1="16" x2="12" y2="12"/>
+                                            <line x1="12" y1="8" x2="12.01" y2="8"/>
+                                        </svg>
+                                        <div>
+                                            <p class="font-medium">Payment Due</p>
+                                            <p class="text-sm">Please complete payment within 24 hours to secure your item. Failure to pay may result in the auction being restarted.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">Full Name <span class="text-error">*</span></label>
+                                        <input type="text" name="name" class="form-input" required autocomplete="name" placeholder="John Doe">
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label class="form-label">Email <span class="text-error">*</span></label>
+                                            <input type="email" name="email" class="form-input" required autocomplete="email" placeholder="john@example.com">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Phone Number <span class="text-error">*</span></label>
+                                            <input type="tel" name="phone" class="form-input" required autocomplete="tel" placeholder="+91 98765 43210">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">Shipping Address <span class="text-error">*</span></label>
+                                        <textarea name="address" class="form-input" rows="3" required placeholder="Full shipping address including city, state, PIN code"></textarea>
+                                    </div>
+
+                                    <h3 class="section-title mt-32 mb-16">Payment Method</h3>
+
+                                    <div class="payment-methods flex gap-12 mb-24" role="radiogroup" aria-label="Payment method">
+                                        <label class="payment-method-option flex-1 flex flex-col items-center p-6 border-2 rounded-lg cursor-pointer transition" data-method="bank_transfer">
+                                            <input type="radio" name="paymentMethod" value="bank_transfer" class="sr-only" required checked>
+                                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="mb-4">
+                                                <rect x="2" y="4" width="20" height="16" rx="2"/>
+                                                <path d="M8 4v4M16 4v4M4 12h16"/>
+                                            </svg>
+                                            <span class="font-medium">Bank Transfer</span>
+                                            <span class="text-sm text-secondary mt-2">NEFT/RTGS/IMPS</span>
+                                        </label>
+                                        <label class="payment-method-option flex-1 flex flex-col items-center p-6 border-2 rounded-lg cursor-pointer transition" data-method="upi">
+                                            <input type="radio" name="paymentMethod" value="upi" class="sr-only" required>
+                                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="mb-4">
+                                                <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+                                                <path d="M12 18h.01"/>
+                                            </svg>
+                                            <span class="font-medium">UPI</span>
+                                            <span class="text-sm text-secondary mt-2">GPay, PhonePe, Paytm</span>
+                                        </label>
+                                        <label class="payment-method-option flex-1 flex flex-col items-center p-6 border-2 rounded-lg cursor-pointer transition" data-method="card">
+                                            <input type="radio" name="paymentMethod" value="card" class="sr-only" required>
+                                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="mb-4">
+                                                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                                                <line x1="1" y1="10" x2="23" y2="10"/>
+                                            </svg>
+                                            <span class="font-medium">Card Payment</span>
+                                            <span class="text-sm text-secondary mt-2">Credit/Debit Card</span>
+                                        </label>
+                                    </div>
+
+                                    <div id="bankTransferFields" class="payment-fields">
+                                        <h4 class="font-semibold mb-16">Bank Transfer Details</h4>
+                                        <div class="alert alert-info mb-24">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <line x1="12" y1="16" x2="12" y2="12"/>
+                                                <line x1="12" y1="8" x2="12.01" y2="8"/>
+                                            </svg>
+                                            Transfer to the seller's account below. Include the Product ID in the reference.
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Transaction Reference / UTR Number <span class="text-error">*</span></label>
+                                            <input type="text" name="transactionId" class="form-input" placeholder="Enter bank transaction reference/UTR" autocomplete="off">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Date of Transfer <span class="text-error">*</span></label>
+                                            <input type="date" name="transferDate" class="form-input" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Bank Name</label>
+                                            <input type="text" name="bankName" class="form-input" placeholder="Your bank name" autocomplete="off">
+                                        </div>
+                                    </div>
+
+                                    <div id="upiFields" class="payment-fields" style="display: none;">
+                                        <h4 class="font-semibold mb-16">UPI Payment</h4>
+                                        <div class="alert alert-info mb-24">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <line x1="12" y1="16" x2="12" y2="12"/>
+                                                <line x1="12" y1="8" x2="12.01" y2="8"/>
+                                            </svg>
+                                            Pay via UPI to the seller's UPI ID. Screenshot the confirmation.
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">UPI Transaction ID <span class="text-error">*</span></label>
+                                            <input type="text" name="upiTransactionId" class="form-input" placeholder="Enter UPI transaction ID" autocomplete="off">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">UPI App Used</label>
+                                            <select name="upiApp" class="form-input">
+                                                <option value="">Select app</option>
+                                                <option value="gpay">Google Pay</option>
+                                                <option value="phonepe">PhonePe</option>
+                                                <option value="paytm">Paytm</option>
+                                                <option value="bhim">BHIM</option>
+                                                <option value="other">Other</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Payment Screenshot</label>
+                                            <input type="file" name="upiScreenshot" class="form-input" accept="image/*">
+                                            <p class="form-help">Optional: Upload screenshot of payment confirmation</p>
+                                        </div>
+                                    </div>
+
+                                    <div id="cardFields" class="payment-fields" style="display: none;">
+                                        <h4 class="font-semibold mb-16">Card Details</h4>
+                                        <div class="alert alert-info mb-24">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <line x1="12" y1="16" x2="12" y2="12"/>
+                                                <line x1="12" y1="8" x2="12.01" y2="8"/>
+                                            </svg>
+                                            Card payments are processed securely. We do not store card details.
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Card Number <span class="text-error">*</span></label>
+                                            <input type="text" name="cardNumber" class="form-input" placeholder="1234 5678 9012 3456" autocomplete="cc-number" maxlength="19">
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label class="form-label">Expiry Date <span class="text-error">*</span></label>
+                                                <input type="text" name="cardExpiry" class="form-input" placeholder="MM/YY" autocomplete="cc-exp" maxlength="5">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">CVV <span class="text-error">*</span></label>
+                                                <input type="text" name="cardCvv" class="form-input" placeholder="123" autocomplete="cc-csc" maxlength="4">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Name on Card <span class="text-error">*</span></label>
+                                            <input type="text" name="cardName" class="form-input" placeholder="JOHN DOE" autocomplete="cc-name">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group mt-32">
+                                        <label class="checkbox-wrapper">
+                                            <input type="checkbox" name="terms" required>
+                                            <span class="checkbox-custom"></span>
+                                            I confirm that I have read and agree to the Terms of Service and understand that payment is non-refundable once the auction is completed.
+                                        </label>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary btn-block btn-lg mt-24" id="submitPaymentBtn">
+                                        <span class="btn-text">Complete Payment</span>
+                                        <span class="btn-loader" style="display: none;"><svg class="spinner" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" stroke-opacity="0.25"/><path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"/></svg> Processing...</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <aside class="payment-summary">
+                        <div class="card sticky" style="top: 100px;">
+                            <div class="card-header">
+                                <h2 class="section-title mb-0">Order Summary</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="summary-item flex justify-between mb-16" id="summaryProduct">
+                                    <span class="text-secondary">Product</span>
+                                    <span class="font-medium">Loading...</span>
+                                </div>
+                                <div class="summary-item flex justify-between mb-16">
+                                    <span class="text-secondary">Product ID</span>
+                                    <span class="font-medium" id="summaryProductId">-</span>
+                                </div>
+                                <div class="summary-item flex justify-between mb-16">
+                                    <span class="text-secondary">Seller</span>
+                                    <span class="font-medium" id="summarySeller">-</span>
+                                </div>
+                                <div class="summary-item flex justify-between mb-16">
+                                    <span class="text-secondary">Auction Ended</span>
+                                    <span class="font-medium" id="summaryEndDate">-</span>
+                                </div>
+                                <hr class="my-24">
+                                <div class="summary-item flex justify-between mb-12">
+                                    <span class="text-secondary">Winning Bid</span>
+                                    <span class="font-semibold text-lg" id="summaryBid">₹0</span>
+                                </div>
+                                <div class="summary-item flex justify-between mb-12">
+                                    <span class="text-secondary">Platform Fee (2%)</span>
+                                    <span class="font-medium" id="summaryFee">₹0</span>
+                                </div>
+                                <div class="summary-item flex justify-between mb-12">
+                                    <span class="text-secondary">Tax (GST 18%)</span>
+                                    <span class="font-medium" id="summaryTax">₹0</span>
+                                </div>
+                                <hr class="my-24">
+                                <div class="summary-item flex justify-between">
+                                    <span class="font-bold text-lg">Total Payable</span>
+                                    <span class="font-bold text-lg text-primary" id="summaryTotal">₹0</span>
+                                </div>
+
+                                <div class="alert alert-warning mt-24">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                                        <line x1="12" y1="9" x2="12" y2="13"/>
+                                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                                    </svg>
+                                    Payment must be completed within 24 hours of auction end. Late payments may result in the item being relisted.
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer" role="contentinfo">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-brand">
+                        <a href="index.html" class="logo flex items-center gap-8">
+                            
+                            <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M8 12L16 8L24 12V20L16 24L8 20V12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 8V24M8 12L24 12M8 20L24 20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/></svg>
+                                <span class="logo-text font-bold text-xl">AuctionX</span>
+                        </a>
+                        <p class="footer-tagline">Premium auction marketplace for rare and valuable collectibles.</p>
+                        <div class="social-links flex gap-12">
+                            <a href="#" class="social-link" aria-label="Twitter"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
+                            <a href="#" class="social-link" aria-label="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+                            <a href="#" class="social-link" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+                        </div>
+                    </div>
+                    <nav class="footer-nav" aria-label="Footer navigation">
+                        <div class="footer-col">
+                            <h4 class="footer-title">Marketplace</h4>
+                            <ul role="list">
+                                <li><a href="categories.html">All Categories</a></li>
+                                <li><a href="live-bids.html">Live Auctions</a></li>
+                                <li><a href="seller-dashboard.html">Sell with Us</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+                <div class="footer-bottom">
+                        <p>&copy; 2024 AuctionX. All rights reserved.</p>
+                        <div class="social-links flex gap-12" style="justify-content: center; margin-top: 12px;">
+                            <a href="https://www.instagram.com/_jeevitha_.28/" target="_blank" class="social-link" aria-label="Instagram" title="Follow on Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+                            <a href="https://www.linkedin.com/in/r-s-jeevitha-raja-7692642b3?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" class="social-link" aria-label="LinkedIn" title="Connect on LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+                            <a href="https://github.com/jeevitha281103" target="_blank" class="social-link" aria-label="GitHub" title="View on GitHub"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
+                            <a href="mailto:jeevitharaja2811@gmail.com" class="social-link" aria-label="Email" title="Send Email"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+                            <a href="https://t.me/@Jeevitha_28_11" target="_blank" class="social-link" aria-label="Telegram" title="Join on Telegram"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></a>
+                        </div>
+                        <p class="footer-disclaimer" style="margin-top: 12px;">AuctionX is a marketplace platform. All items sold by third-party sellers.</p>
+                    </div>
+            </div>
+        </footer>
+
+        <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-hidden="true" style="display: none;">
+            <div class="modal" id="modal" role="document">
+                <div class="modal-header flex justify-between items-center">
+                    <h3 class="modal-title" id="modalTitle"></h3>
+                    <button class="modal-close btn btn-ghost btn-icon" aria-label="Close modal">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="modal-body" id="ModalBody"></div>
+                <div class="modal-footer" id="modalFooter"></div>
+            </div>
+        </div>
+
+        <div class="toast-container" id="toastContainer" aria-live="polite" aria-label="Notifications"></div>
+    </div>
+
+    <script src="data/auction-data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!App.currentUser) {
+                App.showToast('Login Required', 'Please login to complete payment', 'warning');
+                App.navigate('login.html');
+                return;
+            }
+
+            const params = new URLSearchParams(window.location.search);
+            const paymentId = params.get('payment');
+            const productId = params.get('product');
+
+            if (paymentId) {
+                loadPaymentById(paymentId);
+            } else if (productId) {
+                loadPaymentByProduct(productId);
+            } else {
+                showError('No payment or product specified');
+            }
+
+            initPaymentMethodToggle();
+            initCardFormatting();
+        });
+
+        function loadPaymentById(paymentId) {
+            const payment = AuctionData.payments.find(p => p.id === paymentId);
+            if (!payment) {
+                showError('Payment not found');
+                return;
+            }
+
+            if (payment.buyerId !== App.currentUser.id) {
+                showError('Unauthorized access to payment');
+                return;
+            }
+
+            const product = getProductById(payment.productId);
+            if (!product) {
+                showError('Associated product not found');
+                return;
+            }
+
+            populatePaymentForm(payment, product);
+        }
+
+        function loadPaymentByProduct(productId) {
+            const product = getProductById(productId);
+            if (!product) {
+                showError('Product not found');
+                return;
+            }
+
+            if (product.highestBidderId !== App.currentUser.id) {
+                showError('You are not the highest bidder for this product');
+                return;
+            }
+
+            let payment = AuctionData.payments.find(p => p.productId === productId && p.buyerId === App.currentUser.id && p.status === 'pending');
+
+            if (!payment) {
+                payment = {
+                    id: 'pay_' + Date.now(),
+                    productId,
+                    buyerId: App.currentUser.id,
+                    sellerId: product.sellerId,
+                    amount: product.currentBid,
+                    status: 'pending',
+                    createdAt: new Date().toISOString(),
+                    dueDate: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
+                };
+                AuctionData.payments.push(payment);
+                saveData();
+            }
+
+            populatePaymentForm(payment, product);
+        }
+
+        function populatePaymentForm(payment, product) {
+            document.getElementById('paymentId').value = payment.id;
+            document.getElementById('paymentProductId').value = product.id;
+
+            document.getElementById('summaryProduct').innerHTML = `
+                <span class="text-secondary">Product</span>
+                <span class="font-medium">${App.escapeHtml(product.name)}</span>
+            `;
+            document.getElementById('summaryProductId').textContent = product.id;
+            document.getElementById('summarySeller').textContent = product.sellerName;
+            document.getElementById('summaryEndDate').textContent = product.endTime ? App.formatDate(product.endTime) : 'N/A';
+            document.getElementById('summaryBid').textContent = App.formatCurrency(product.currentBid);
+
+            const fee = Math.round(product.currentBid * 0.02);
+            const tax = Math.round(fee * 0.18);
+            const total = product.currentBid + fee + tax;
+
+            document.getElementById('summaryFee').textContent = App.formatCurrency(fee);
+            document.getElementById('summaryTax').textContent = App.formatCurrency(tax);
+            document.getElementById('summaryTotal').textContent = App.formatCurrency(total);
+
+            if (App.currentUser) {
+                document.querySelector('input[name="name"]').value = App.currentUser.name;
+                document.querySelector('input[name="email"]').value = App.currentUser.email;
+                document.querySelector('input[name="phone"]').value = App.currentUser.phone || '';
+                document.querySelector('textarea[name="address"]').value = App.currentUser.address || '';
+            }
+        }
+
+        function initPaymentMethodToggle() {
+            document.querySelectorAll('.payment-method-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    const method = option.dataset.method;
+                    const radio = option.querySelector('input[type="radio"]');
+
+                    document.querySelectorAll('.payment-method-option').forEach(o => {
+                        o.classList.remove('border-primary', 'bg-primary', 'bg-opacity-5');
+                        o.querySelector('input[type="radio"]').checked = false;
+                    });
+
+                    option.classList.add('border-primary', 'bg-primary', 'bg-opacity-5');
+                    radio.checked = true;
+
+                    document.getElementById('bankTransferFields').style.display = method === 'bank_transfer' ? 'block' : 'none';
+                    document.getElementById('upiFields').style.display = method === 'upi' ? 'block' : 'none';
+                    document.getElementById('cardFields').style.display = method === 'card' ? 'block' : 'none';
+
+                    document.querySelectorAll('.payment-fields input[required], .payment-fields select[required]').forEach(input => {
+                        input.required = input.closest('.payment-fields')?.style.display !== 'none';
+                    });
+                });
+            });
+        }
+
+        function initCardFormatting() {
+            const cardNumber = document.querySelector('input[name="cardNumber"]');
+            const cardExpiry = document.querySelector('input[name="cardExpiry"]');
+            const cardCvv = document.querySelector('input[name="cardCvv"]');
+
+            cardNumber?.addEventListener('input', (e) => {
+                let value = e.target.value.replace(/\D/g, '');
+                value = value.replace(/(\d{4})/g, '$1 ').trim();
+                e.target.value = value.substring(0, 19);
+            });
+
+            cardExpiry?.addEventListener('input', (e) => {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length >= 2) {
+                    value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                }
+                e.target.value = value.substring(0, 5);
+            });
+
+            cardCvv?.addEventListener('input', (e) => {
+                e.target.value = e.target.value.replace(/\D/g, '').substring(0, 4);
+            });
+        }
+
+        function showError(message) {
+            document.getElementById('main').innerHTML = `
+                <div class="card" style="max-width: 600px; margin: 40px auto; padding: 40px; text-align: center;">
+                    <h2 class="text-error mb-16">Payment Error</h2>
+                    <p class="text-secondary mb-24">${App.escapeHtml(message)}</p>
+                    <a href="my-bids.html" class="btn btn-primary">Back to My Bids</a>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
