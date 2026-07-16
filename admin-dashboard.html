@@ -505,8 +505,8 @@
                     <td class="text-secondary">${App.escapeHtml(user.phone)}</td>
                     <td class="text-secondary">${App.formatDate(user.createdAt)}</td>
                     <td>${getUserBids(user.id).length}</td>
-                    <td>${user.purchases?.length || 0}</td>
-                    <td>${user.soldProducts?.length || 0}</td>
+                    <td>${AuctionData.products.filter(p => p.highestBidderId === user.id && (p.status === 'sold' || p.status === 'sold_pending_payment')).length}</td>
+                    <td>${AuctionData.products.filter(p => p.sellerId === user.id && (p.status === 'sold' || p.status === 'sold_pending_payment')).length}</td>
                     <td>
                         <div class="flex gap-8">
                             <button class="btn btn-ghost btn-sm view-user-btn" data-user-id="${user.id}">View</button>
@@ -743,50 +743,60 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">Purchases</label>
-                            <div class="form-input" style="background: var(--background);">${user.purchases?.length || 0}</div>
+                            <div class="form-input" style="background: var(--background);">${AuctionData.products.filter(p => p.highestBidderId === user.id && (p.status === 'sold' || p.status === 'sold_pending_payment')).length}</div>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Sales</label>
-                            <div class="form-input" style="background: var(--background);">${user.soldProducts?.length || 0}</div>
+                            <div class="form-input" style="background: var(--background);">${AuctionData.products.filter(p => p.sellerId === user.id && (p.status === 'sold' || p.status === 'sold_pending_payment')).length}</div>
                         </div>
                     </div>
 
-                    ${user.purchases?.length > 0 ? `
+                    ${(() => {
+                        const userPurchases = AuctionData.products.filter(p => p.highestBidderId === user.id && (p.status === 'sold' || p.status === 'sold_pending_payment'));
+                        if (userPurchases.length > 0) {
+                            return `
                         <h4 class="font-semibold mt-24 mb-16">Recent Purchases</h4>
                         <div class="table-container" style="max-height: 200px;">
                             <table>
-                                <thead><tr><th>Product</th><th>Price</th><th>Date</th></tr></thead>
+                                <thead><tr><th>Product</th><th>Price</th><th>Status</th></tr></thead>
                                 <tbody>
-                                    ${user.purchases.slice(-5).map(p => `
+                                    ${userPurchases.slice(-5).map(p => `
                                         <tr>
-                                            <td>${App.escapeHtml(p.productName)}</td>
-                                            <td>${App.formatCurrency(p.price)}</td>
-                                            <td>${App.formatDate(p.purchasedAt)}</td>
+                                            <td>${App.escapeHtml(p.name)}</td>
+                                            <td>${App.formatCurrency(p.currentBid)}</td>
+                                            <td><span class="badge ${p.status === 'sold' ? 'badge-success' : 'badge-warning'}">${p.status === 'sold' ? 'Paid' : 'Payment Pending'}</span></td>
                                         </tr>
                                     `).join('')}
                                 </tbody>
                             </table>
-                        </div>
-                    ` : ''}
+                        </div>`;
+                        }
+                        return '';
+                    })()}
 
-                    ${user.soldProducts?.length > 0 ? `
+                    ${(() => {
+                        const userSales = AuctionData.products.filter(p => p.sellerId === user.id && (p.status === 'sold' || p.status === 'sold_pending_payment'));
+                        if (userSales.length > 0) {
+                            return `
                         <h4 class="font-semibold mt-24 mb-16">Recent Sales</h4>
                         <div class="table-container" style="max-height: 200px;">
                             <table>
-                                <thead><tr><th>Product</th><th>Buyer</th><th>Price</th><th>Date</th></tr></thead>
+                                <thead><tr><th>Product</th><th>Buyer</th><th>Price</th><th>Status</th></tr></thead>
                                 <tbody>
-                                    ${user.soldProducts.slice(-5).map(s => `
+                                    ${userSales.slice(-5).map(p => `
                                         <tr>
-                                            <td>${App.escapeHtml(s.productName)}</td>
-                                            <td>${App.escapeHtml(s.buyerName)}</td>
-                                            <td>${App.formatCurrency(s.soldPrice)}</td>
-                                            <td>${App.formatDate(s.soldAt)}</td>
+                                            <td>${App.escapeHtml(p.name)}</td>
+                                            <td>${App.escapeHtml(p.highestBidder || 'N/A')}</td>
+                                            <td>${App.formatCurrency(p.currentBid)}</td>
+                                            <td><span class="badge ${p.status === 'sold' ? 'badge-success' : 'badge-warning'}">${p.status === 'sold' ? 'Paid' : 'Payment Pending'}</span></td>
                                         </tr>
                                     `).join('')}
                                 </tbody>
                             </table>
-                        </div>
-                    ` : ''}
+                        </div>`;
+                        }
+                        return '';
+                    })()}
                 `,
                 `<button type="button" class="btn btn-primary" onclick="App.closeModal()">Close</button>`
             );

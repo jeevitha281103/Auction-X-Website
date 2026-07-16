@@ -1479,7 +1479,10 @@ tr:hover td {
     position: relative;
     height: 260px;
     overflow: hidden;
-    background: var(--background);
+    background: linear-gradient(135deg, var(--grey1), var(--grey2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .product-image-placeholder {
     width: 100%;
@@ -1491,8 +1494,9 @@ tr:hover td {
 }
 .product-image {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: 260px;
+    object-fit: contain;
+    object-position: center;
     display: block;
 }
 .product-badge-container {

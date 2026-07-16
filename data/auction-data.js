@@ -821,7 +821,9 @@ const AuctionData = {
 };
 
 function saveData() {
-    localStorage.setItem('auctionx_data', JSON.stringify(AuctionData));
+    const toSave = Object.assign({}, AuctionData);
+    toSave.currentUser = null;
+    localStorage.setItem('auctionx_data', JSON.stringify(toSave));
 }
 
 function loadData() {
@@ -830,7 +832,6 @@ function loadData() {
     const data = localStorage.getItem('auctionx_data');
     if (data) {
         const saved = JSON.parse(data);
-        if (saved.currentUser) AuctionData.currentUser = saved.currentUser;
         if (saved.users) {
             saved.users.forEach(savedUser => {
                 if (hardcodedUserIds.has(savedUser.id)) {
@@ -864,22 +865,48 @@ function loadData() {
         if (saved.payments) AuctionData.payments = saved.payments;
         if (saved.adminActions) AuctionData.adminActions = saved.adminActions;
     }
+
+    endExpiredAuctions();
+}
+
+function endExpiredAuctions() {
+    let changed = false;
+    AuctionData.products.forEach(product => {
+        if (product.status === 'active' && product.endTime) {
+            const remaining = new Date(product.endTime) - new Date();
+            if (remaining <= 0) {
+                if (product.highestBidderId) {
+                    product.status = 'sold_pending_payment';
+                } else {
+                    product.status = 'unsold';
+                }
+                changed = true;
+            }
+        }
+    });
+    if (changed) {
+        saveData();
+    }
 }
 
 function getCurrentUser() {
-    return AuctionData.currentUser;
+    const sessionData = sessionStorage.getItem('auctionx_session');
+    if (sessionData) {
+        const session = JSON.parse(sessionData);
+        const user = AuctionData.users.find(u => u.id === session.userId);
+        if (user) return user;
+    }
+    return null;
 }
 
 function setCurrentUser(user) {
     AuctionData.currentUser = user;
-    saveData();
+    sessionStorage.setItem('auctionx_session', JSON.stringify({ userId: user.id, loginTime: Date.now() }));
 }
 
 function logout() {
     AuctionData.currentUser = null;
-    localStorage.removeItem('auctionx_data');
-    localStorage.removeItem('auctionx_current_user');
-    localStorage.removeItem('auctionx_accounts');
+    sessionStorage.removeItem('auctionx_session');
 }
 
 function getUserById(id) {
@@ -1226,5 +1253,3 @@ function getTimeRemaining(endTime) {
 function navigate(page) {
     window.location.href = page;
 }
-
-loadData();

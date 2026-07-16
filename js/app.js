@@ -8,6 +8,7 @@ const App = {
     searchDebounce: null,
 
     init() {
+        loadData();
         this.checkAuth();
         this.bindGlobalEvents();
         this.updateHeader();
@@ -17,6 +18,7 @@ const App = {
     checkAuth() {
         const user = getCurrentUser();
         this.currentUser = user;
+        AuctionData.currentUser = user;
     },
 
     bindGlobalEvents() {

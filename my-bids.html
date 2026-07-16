@@ -453,7 +453,9 @@
 
             const pendingPayments = AuctionData.payments.filter(p => p.buyerId === user.id && p.status === 'pending');
 
-            const wonAuctions = user.purchases || [];
+            const wonAuctions = AuctionData.products.filter(p =>
+                p.highestBidderId === user.id && (p.status === 'sold' || p.status === 'sold_pending_payment')
+            );
 
             const lostBids = allBids.filter(bid => {
                 const product = getProductById(bid.productId);
@@ -557,25 +559,25 @@
             }).join('');
         }
 
-        function renderWonAuctions(purchases) {
+        function renderWonAuctions(wonProducts) {
             const tbody = document.getElementById('wonAuctionsBody');
 
-            if (purchases.length === 0) {
+            if (wonProducts.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="5" class="text-center py-16 text-secondary">No won auctions yet</td></tr>';
                 return;
             }
 
-            tbody.innerHTML = purchases.map(purchase => {
-                const product = getProductById(purchase.productId);
+            tbody.innerHTML = wonProducts.map(product => {
+                const isPaid = product.status === 'sold';
                 return `
                     <tr>
                         <td>
-                            <a href="product.html?id=${purchase.productId}" class="font-medium hover:text-primary">${purchase.productName}</a>
+                            <a href="product.html?id=${product.id}" class="font-medium hover:text-primary">${product.name}</a>
                         </td>
-                        <td>${purchase.sellerName || 'Unknown'}</td>
-                        <td class="font-semibold">${App.formatCurrency(purchase.price)}</td>
-                        <td class="text-secondary">${App.formatDate(purchase.purchasedAt)}</td>
-                        <td><span class="badge badge-success">Completed</span></td>
+                        <td>${product.sellerName || 'Unknown'}</td>
+                        <td class="font-semibold">${App.formatCurrency(product.currentBid)}</td>
+                        <td class="text-secondary">${App.formatDate(product.endTime)}</td>
+                        <td><span class="badge ${isPaid ? 'badge-success' : 'badge-warning'}">${isPaid ? 'Paid' : 'Payment Pending'}</span></td>
                     </tr>
                 `;
             }).join('');
@@ -610,7 +612,7 @@
             `).join('');
         }
 
-        function renderHistory(bids, purchases) {
+        function renderHistory(bids, wonProducts) {
             const tbody = document.getElementById('historyBody');
 
             const history = [];
@@ -629,13 +631,13 @@
                 }
             });
 
-            purchases.forEach(purchase => {
+            wonProducts.forEach(product => {
                 history.push({
-                    date: purchase.purchasedAt,
+                    date: product.endTime,
                     type: 'purchase',
-                    product: purchase.productName,
-                    productId: purchase.productId,
-                    amount: purchase.price,
+                    product: product.name,
+                    productId: product.id,
+                    amount: product.currentBid,
                     result: 'Won'
                 });
             });

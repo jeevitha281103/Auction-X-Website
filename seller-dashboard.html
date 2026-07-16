@@ -374,7 +374,8 @@
         function loadSellerDashboard() {
             const user = App.currentUser;
             const products = getProductsBySeller(user.id);
-            const soldProducts = user.soldProducts || [];
+            const soldProducts = products.filter(p => p.status === 'sold' || p.status === 'sold_pending_payment');
+            const pendingPayments = soldProducts.filter(p => p.status === 'sold_pending_payment');
 
             const activeListings = products.filter(p => p.status === 'active' || p.status === 'pending').length;
             const pendingBids = products.filter(p => p.status === 'active' && p.bidHistory.length > 0).length;
@@ -382,7 +383,7 @@
             document.getElementById('statActiveListings').textContent = activeListings;
             document.getElementById('statPendingBids').textContent = pendingBids;
             document.getElementById('statSoldItems').textContent = soldProducts.length;
-            document.getElementById('statTotalEarnings').textContent = App.formatCurrency(soldProducts.reduce((sum, p) => sum + p.soldPrice, 0));
+            document.getElementById('statTotalEarnings').textContent = App.formatCurrency(soldProducts.reduce((sum, p) => sum + p.currentBid, 0));
 
             renderSellerTable(products);
             renderSoldTable(soldProducts);
@@ -543,15 +544,15 @@
 
             document.getElementById('soldItemsCard').style.display = 'block';
 
-            tbody.innerHTML = soldProducts.map(sale => `
+            tbody.innerHTML = soldProducts.map(product => `
                 <tr>
                     <td>
-                        <a href="product.html?id=${sale.productId}" class="font-medium hover:text-primary">${App.escapeHtml(sale.productName)}</a>
+                        <a href="product.html?id=${product.id}" class="font-medium hover:text-primary">${App.escapeHtml(product.name)}</a>
                     </td>
-                    <td>${App.escapeHtml(sale.buyerName)}</td>
-                    <td class="font-semibold text-success">${App.formatCurrency(sale.soldPrice)}</td>
-                    <td class="text-secondary">${App.formatDate(sale.soldAt)}</td>
-                    <td><span class="badge badge-success">Paid</span></td>
+                    <td>${App.escapeHtml(product.highestBidder || 'N/A')}</td>
+                    <td class="font-semibold text-success">${App.formatCurrency(product.currentBid)}</td>
+                    <td class="text-secondary">${App.formatDate(product.endTime)}</td>
+                    <td><span class="badge ${product.status === 'sold' ? 'badge-success' : 'badge-warning'}">${product.status === 'sold' ? 'Paid' : 'Payment Pending'}</span></td>
                 </tr>
             `).join('');
         }
