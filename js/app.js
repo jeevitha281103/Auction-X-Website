@@ -69,9 +69,9 @@ const App = {
             e.preventDefault();
             logout();
             this.currentUser = null;
-            this.updateHeader();
-            this.showToast('Logged Out', 'You have been logged out successfully', 'success');
-            window.location.href = 'index.html';
+            this.bidTimers.forEach(timerId => clearInterval(timerId));
+            this.bidTimers.clear();
+            window.location.replace('index.html');
         }
         if (e.target.closest('.place-bid-btn')) {
             const btn = e.target.closest('.place-bid-btn');
@@ -80,6 +80,16 @@ const App = {
                 this.openBidModal(productId);
             } else if (!this.currentUser) {
                 this.showToast('Login Required', 'Please login to place a bid', 'warning');
+                window.location.href = 'login.html';
+            }
+        }
+        if (e.target.closest('.change-bid-btn')) {
+            const btn = e.target.closest('.change-bid-btn');
+            const productId = btn.dataset.productId;
+            if (productId && this.currentUser) {
+                this.openChangeBidModal(productId);
+            } else if (!this.currentUser) {
+                this.showToast('Login Required', 'Please login to change your bid', 'warning');
                 window.location.href = 'login.html';
             }
         }
@@ -537,6 +547,14 @@ const App = {
             if (btn) {
                 btn.disabled = product.status !== 'active' || (this.currentUser && this.currentUser.id === product.sellerId);
                 btn.textContent = product.status === 'active' ? 'Place Bid' : product.status === 'sold_pending_payment' ? 'Payment Pending' : product.status === 'sold' ? 'Sold' : 'Bidding Ended';
+
+                if (product.status === 'active' && this.userHasBidOnProduct(productId)) {
+                    btn.classList.remove('place-bid-btn');
+                    btn.classList.add('change-bid-btn', 'btn-outline');
+                    btn.classList.remove('btn-primary');
+                    btn.textContent = 'Change Bid';
+                    btn.disabled = false;
+                }
             }
         });
     },
@@ -591,6 +609,14 @@ const App = {
                 btn.dataset.productId = productId;
                 btn.disabled = product.status !== 'active' || (this.currentUser && this.currentUser.id === product.sellerId);
                 btn.textContent = product.status === 'active' ? 'Place Bid' : product.status === 'sold_pending_payment' ? 'Payment Pending' : product.status === 'sold' ? 'Sold' : 'Bidding Ended';
+
+                if (product.status === 'active' && this.userHasBidOnProduct(productId)) {
+                    btn.classList.remove('place-bid-btn');
+                    btn.classList.add('change-bid-btn', 'btn-outline');
+                    btn.classList.remove('btn-primary');
+                    btn.textContent = 'Change Bid';
+                    btn.disabled = false;
+                }
             }
 
         });
@@ -703,11 +729,11 @@ const App = {
         if (!this.validateForm(form)) return;
 
         const formData = new FormData(form);
-        const email = formData.get('email');
+        const identifier = formData.get('identifier');
         const password = formData.get('password');
         const role = formData.get('role');
 
-            const result = loginUser(email, password, role);
+            const result = loginUser(identifier, password, role);
             if (result.success) {
                 this.currentUser = result.user;
                 this.saveAccount(result.user);
@@ -736,7 +762,7 @@ const App = {
         }
 
         const userData = {
-            name: formData.get('name'),
+            name: `${formData.get('firstName')} ${formData.get('lastName')}`.trim(),
             email: formData.get('email'),
             phone: formData.get('phone'),
             password: password,
@@ -803,6 +829,9 @@ const App = {
 
         const formData = new FormData(form);
         const paymentId = formData.get('paymentId');
+        const productId = formData.get('productId');
+        const payment = AuctionData.payments.find(p => p.id === paymentId);
+
         const paymentData = {
             method: formData.get('paymentMethod'),
             transactionId: formData.get('transactionId') || 'TXN' + Date.now()
@@ -848,7 +877,7 @@ const App = {
         this.openModal(
             `Place Bid on ${product.name}`,
             `
-                <form data-form="bidding" class="bid-form">
+                <form data-form="bidding" id="bidForm" class="bid-form">
                     <input type="hidden" name="productId" value="${productId}">
                     <div class="form-group">
                         <label class="form-label">Current Bid</label>
@@ -860,7 +889,8 @@ const App = {
                     </div>
                     <div class="form-group">
                         <label for="bidAmount" class="form-label">Your Bid Amount *</label>
-                        <input type="number" id="bidAmount" name="amount" class="form-input" required min="${minBid}" step="${product.minBidIncrement}" placeholder="Enter your bid" value="${minBid}">
+                        <input type="number" id="bidAmount" name="amount" class="form-input" required data-min="${minBid}" min="${minBid}" step="${product.minBidIncrement}" placeholder="Enter your bid" value="${minBid}">
+                        <p class="form-help" id="bidHelp">Enter ${formatCurrency(minBid)} or more</p>
                     </div>
                     <div class="alert alert-info" style="font-size: 0.8125rem;">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
@@ -869,10 +899,139 @@ const App = {
                 </form>
             `,
             `
-                <button type="button" class="btn btn-ghost" onclick="App.closeModal()">Cancel</button>
-                <button type="submit" form="bidForm" class="btn btn-primary">Place Bid</button>
+                <button type="button" class="btn btn-ghost" id="bidCancelBtn">Cancel</button>
+                <button type="button" class="btn btn-primary" id="bidSubmitBtn">Place Bid</button>
             `
         );
+
+        const bidInput = document.getElementById('bidAmount');
+        const bidHelp = document.getElementById('bidHelp');
+        const submitBtn = document.getElementById('bidSubmitBtn');
+        const cancelBtn = document.getElementById('bidCancelBtn');
+
+        bidInput.addEventListener('input', () => {
+            const val = parseFloat(bidInput.value);
+            if (isNaN(val) || val < minBid) {
+                bidHelp.textContent = `Minimum bid is ${formatCurrency(minBid)}`;
+                bidHelp.style.color = 'var(--error)';
+            } else {
+                bidHelp.textContent = `Your bid: ${formatCurrency(val)} - Click Place Bid to confirm`;
+                bidHelp.style.color = 'var(--success)';
+            }
+        });
+
+        cancelBtn.addEventListener('click', () => this.closeModal());
+
+        submitBtn.addEventListener('click', () => {
+            const amount = parseFloat(bidInput.value);
+            if (isNaN(amount) || amount < minBid) {
+                this.showToast('Invalid Bid', `Bid must be at least ${formatCurrency(minBid)}`, 'error');
+                return;
+            }
+            const result = placeBid(productId, this.currentUser.id, amount);
+            if (result.success) {
+                this.showToast('Bid Placed!', `Your bid of ${formatCurrency(amount)} has been placed`, 'success');
+                this.closeModal();
+                this.updateBidDisplays(productId);
+            } else {
+                this.showToast('Bid Failed', result.message, 'error');
+            }
+        });
+    },
+
+    userHasBidOnProduct(productId) {
+        if (!this.currentUser) return false;
+        const product = getProductById(productId);
+        if (!product) return false;
+        return product.bidHistory.some(b => b.bidderId === this.currentUser.id);
+    },
+
+    getUserBidOnProduct(productId) {
+        if (!this.currentUser) return null;
+        const product = getProductById(productId);
+        if (!product) return null;
+        const userBids = product.bidHistory.filter(b => b.bidderId === this.currentUser.id);
+        return userBids.length > 0 ? userBids[userBids.length - 1] : null;
+    },
+
+    openChangeBidModal(productId) {
+        const product = getProductById(productId);
+        if (!product) return;
+
+        const userBid = this.getUserBidOnProduct(productId);
+        const minBid = product.currentBid + product.minBidIncrement;
+        const isWinning = product.highestBidderId === this.currentUser.id;
+        const userBidAmount = userBid ? userBid.amount : 0;
+
+        this.openModal(
+            `Change Bid on ${product.name}`,
+            `
+                <form data-form="bidding" id="bidForm" class="bid-form">
+                    <input type="hidden" name="productId" value="${productId}">
+                    ${userBid ? `
+                    <div class="alert alert-info" style="font-size: 0.8125rem; margin-bottom: 16px;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                        Your current bid: <strong>${formatCurrency(userBidAmount)}</strong> ${isWinning ? '(Winning)' : '(Outbid)'}
+                    </div>
+                    ` : ''}
+                    <div class="form-group">
+                        <label class="form-label">Current Highest Bid</label>
+                        <div class="form-input" style="background: var(--background); color: var(--primary); font-weight: 700; cursor: default;">${formatCurrency(product.currentBid)}</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Minimum Next Bid</label>
+                        <div class="form-input" style="background: var(--background); color: var(--text-secondary); cursor: default;">${formatCurrency(minBid)}</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="bidAmount" class="form-label">New Bid Amount *</label>
+                        <input type="number" id="bidAmount" name="amount" class="form-input" required data-min="${minBid}" min="${minBid}" step="${product.minBidIncrement}" placeholder="Enter your new bid" value="${minBid}">
+                        <p class="form-help" id="bidHelp">Enter ${formatCurrency(minBid)} or more to update your bid</p>
+                    </div>
+                    <div class="alert alert-info" style="font-size: 0.8125rem;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                        Minimum bid increment: ${formatCurrency(product.minBidIncrement)}. Your previous bid will be superseded.
+                    </div>
+                </form>
+            `,
+            `
+                <button type="button" class="btn btn-ghost" id="bidCancelBtn">Cancel</button>
+                <button type="button" class="btn btn-primary" id="bidSubmitBtn">Update Bid</button>
+            `
+        );
+
+        const bidInput = document.getElementById('bidAmount');
+        const bidHelp = document.getElementById('bidHelp');
+        const submitBtn = document.getElementById('bidSubmitBtn');
+        const cancelBtn = document.getElementById('bidCancelBtn');
+
+        bidInput.addEventListener('input', () => {
+            const val = parseFloat(bidInput.value);
+            if (isNaN(val) || val < minBid) {
+                bidHelp.textContent = `Minimum bid is ${formatCurrency(minBid)}`;
+                bidHelp.style.color = 'var(--error)';
+            } else {
+                bidHelp.textContent = `New bid: ${formatCurrency(val)} - Click Update Bid to confirm`;
+                bidHelp.style.color = 'var(--success)';
+            }
+        });
+
+        cancelBtn.addEventListener('click', () => this.closeModal());
+
+        submitBtn.addEventListener('click', () => {
+            const amount = parseFloat(bidInput.value);
+            if (isNaN(amount) || amount < minBid) {
+                this.showToast('Invalid Bid', `Bid must be at least ${formatCurrency(minBid)}`, 'error');
+                return;
+            }
+            const result = placeBid(productId, this.currentUser.id, amount);
+            if (result.success) {
+                this.showToast('Bid Updated!', `Your new bid of ${formatCurrency(amount)} has been placed`, 'success');
+                this.closeModal();
+                this.updateBidDisplays(productId);
+            } else {
+                this.showToast('Bid Failed', result.message, 'error');
+            }
+        });
     }
 };
 

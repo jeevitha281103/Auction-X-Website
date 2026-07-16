@@ -23,6 +23,7 @@
                         <a href="index.html" class="nav-link">Home</a>
                         <a href="categories.html" class="nav-link">Shop</a>
                         <a href="live-bids.html" class="nav-link">Live Bids</a>
+                        <a href="sold.html" class="nav-link">Sold</a>
                         <a href="dashboard.html" class="nav-link">Dashboard</a>
                         
                     </nav>
@@ -144,6 +145,7 @@
                         <li><a href="index.html" class="mobile-nav-link">Home</a></li>
                         <li><a href="categories.html" class="mobile-nav-link">Shop</a></li>
                         <li><a href="live-bids.html" class="mobile-nav-link">Live Bids</a></li>
+                        <li><a href="sold.html" class="mobile-nav-link">Sold</a></li>
                     </ul>
                     <div class="mobile-menu-divider"></div>
                     <div class="mobile-auth" id="mobileAuth">
@@ -495,18 +497,18 @@
                         <td><span class="badge ${isHighest ? 'badge-success' : 'badge-warning'}">${isHighest ? 'Winning' : 'Outbid'}</span></td>
                         <td class="bid-timer ${!isHighest ? 'text-warning' : ''}">${timeLeft}</td>
                         <td>
-                            ${!isHighest ? `
-                                <button class="btn btn-primary btn-sm place-bid-btn" data-product-id="${product.id}">Bid Higher</button>
+                            ${product.status === 'active' ? `
+                                <button class="btn btn-sm ${isHighest ? 'btn-outline' : 'btn-primary'} change-bid-btn" data-product-id="${product.id}">Change Bid</button>
                             ` : `
-                                <span class="text-success text-sm">You're winning</span>
+                                <span class="text-secondary text-sm">${App.getStatusLabel(product.status)}</span>
                             `}
                         </td>
                     </tr>
                 `;
             }).join('');
 
-            tbody.querySelectorAll('.place-bid-btn').forEach(btn => {
-                btn.addEventListener('click', () => App.openBidModal(btn.dataset.productId));
+            tbody.querySelectorAll('.change-bid-btn').forEach(btn => {
+                btn.addEventListener('click', () => App.openChangeBidModal(btn.dataset.productId));
             });
 
             if (bids.length > 0) {

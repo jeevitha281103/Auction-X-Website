@@ -3,6 +3,7 @@ const AuctionData = {
         {
             id: 'admin_001',
             name: 'Admin User',
+            username: 'admin',
             email: 'admin@auctionx.com',
             phone: '9876543210',
             password: 'admin123',
@@ -20,6 +21,7 @@ const AuctionData = {
         {
             id: 'seller_001',
             name: 'Richard Kelly',
+            username: 'richard',
             email: 'richard@kelly.com',
             phone: '9876543211',
             password: 'richard123',
@@ -37,6 +39,7 @@ const AuctionData = {
         {
             id: 'seller_002',
             name: 'Sabrina Carpenter',
+            username: 'sabrina',
             email: 'sabrina@carpenter.com',
             phone: '9876543213',
             password: 'sabrina123',
@@ -54,6 +57,7 @@ const AuctionData = {
         {
             id: 'seller_003',
             name: 'John Carter',
+            username: 'john',
             email: 'john@carter.com',
             phone: '9876543214',
             password: 'john123',
@@ -71,6 +75,7 @@ const AuctionData = {
         {
             id: 'seller_004',
             name: 'Harvey Miller',
+            username: 'harvey',
             email: 'harvey@miller.com',
             phone: '9876543215',
             password: 'harvey123',
@@ -88,6 +93,7 @@ const AuctionData = {
         {
             id: 'customer_001',
             name: 'Elayna Galea',
+            username: 'elayna',
             email: 'elayna@galea.com',
             phone: '9876543220',
             password: 'elayna123',
@@ -105,6 +111,7 @@ const AuctionData = {
         {
             id: 'customer_002',
             name: 'Colleen Hoover',
+            username: 'colleen',
             email: 'colleen@hoover.com',
             phone: '9876543221',
             password: 'colleen123',
@@ -122,6 +129,7 @@ const AuctionData = {
         {
             id: 'customer_003',
             name: 'Mercedes Ron',
+            username: 'mercedes',
             email: 'mercedes@ron.com',
             phone: '9876543222',
             password: 'mercedes123',
@@ -139,6 +147,7 @@ const AuctionData = {
         {
             id: 'customer_004',
             name: 'Rebecca Yarros',
+            username: 'rebecca',
             email: 'rebecca@yarros.com',
             phone: '9876543223',
             password: 'rebecca123',
@@ -156,6 +165,7 @@ const AuctionData = {
         {
             id: 'customer_005',
             name: 'Stephanie Archer',
+            username: 'stephanie',
             email: 'stephanie@archer.com',
             phone: '9876543224',
             password: 'stephanie123',
@@ -173,6 +183,7 @@ const AuctionData = {
         {
             id: 'customer_006',
             name: 'Robin Williams',
+            username: 'robin',
             email: 'robin@williams.com',
             phone: '9876543225',
             password: 'robin123',
@@ -190,6 +201,7 @@ const AuctionData = {
         {
             id: 'customer_007',
             name: 'Carl Winter',
+            username: 'carl',
             email: 'carl@winter.com',
             phone: '9876543226',
             password: 'carl123',
@@ -207,6 +219,7 @@ const AuctionData = {
         {
             id: 'customer_008',
             name: 'Holly Jackson',
+            username: 'holly',
             email: 'holly@jackson.com',
             phone: '9876543227',
             password: 'holly123',
@@ -812,11 +825,44 @@ function saveData() {
 }
 
 function loadData() {
+    const hardcodedUserIds = new Set(AuctionData.users.map(u => u.id));
+
     const data = localStorage.getItem('auctionx_data');
     if (data) {
         const saved = JSON.parse(data);
         if (saved.currentUser) AuctionData.currentUser = saved.currentUser;
-        if (saved.users) AuctionData.users = saved.users;
+        if (saved.users) {
+            saved.users.forEach(savedUser => {
+                if (hardcodedUserIds.has(savedUser.id)) {
+                    const existing = AuctionData.users.find(u => u.id === savedUser.id);
+                    if (existing) {
+                        if (savedUser.soldProducts) existing.soldProducts = savedUser.soldProducts;
+                        if (savedUser.purchases) existing.purchases = savedUser.purchases;
+                    }
+                } else {
+                    AuctionData.users.push(savedUser);
+                }
+            });
+        }
+        if (saved.products) {
+            saved.products.forEach(savedProduct => {
+                const existing = AuctionData.products.find(p => p.id === savedProduct.id);
+                if (existing) {
+                    existing.status = savedProduct.status;
+                    existing.currentBid = savedProduct.currentBid;
+                    existing.highestBidder = savedProduct.highestBidder;
+                    existing.highestBidderId = savedProduct.highestBidderId;
+                    existing.bidHistory = savedProduct.bidHistory;
+                    existing.startTime = savedProduct.startTime;
+                    existing.endTime = savedProduct.endTime;
+                } else {
+                    AuctionData.products.push(savedProduct);
+                }
+            });
+        }
+        if (saved.bids) AuctionData.bids = saved.bids;
+        if (saved.payments) AuctionData.payments = saved.payments;
+        if (saved.adminActions) AuctionData.adminActions = saved.adminActions;
     }
 }
 
@@ -831,8 +877,9 @@ function setCurrentUser(user) {
 
 function logout() {
     AuctionData.currentUser = null;
+    localStorage.removeItem('auctionx_data');
     localStorage.removeItem('auctionx_current_user');
-    saveData();
+    localStorage.removeItem('auctionx_accounts');
 }
 
 function getUserById(id) {
@@ -914,6 +961,8 @@ function startBid(productId, durationMinutes = 5) {
     if (!product) return { success: false, message: 'Product not found' };
     if (product.status !== 'pending') return { success: false, message: 'Product is not pending' };
 
+    const adminId = AuctionData.currentUser?.id || 'system';
+
     product.status = 'active';
     product.startTime = new Date().toISOString();
     product.endTime = new Date(Date.now() + durationMinutes * 60000).toISOString();
@@ -922,7 +971,7 @@ function startBid(productId, durationMinutes = 5) {
         id: 'action_' + Date.now(),
         type: 'start_bid',
         productId: productId,
-        adminId: AuctionData.currentUser.id,
+        adminId: adminId,
         timestamp: new Date().toISOString()
     });
 
@@ -935,6 +984,8 @@ function endBid(productId) {
     if (!product) return { success: false, message: 'Product not found' };
     if (product.status !== 'active') return { success: false, message: 'Auction is not active' };
 
+    const adminId = AuctionData.currentUser?.id || 'system';
+
     if (product.highestBidderId) {
         product.status = 'sold_pending_payment';
     } else {
@@ -945,7 +996,7 @@ function endBid(productId) {
         id: 'action_' + Date.now(),
         type: 'end_bid',
         productId: productId,
-        adminId: AuctionData.currentUser.id,
+        adminId: adminId,
         timestamp: new Date().toISOString()
     });
 
@@ -954,24 +1005,47 @@ function endBid(productId) {
 }
 
 function processPayment(paymentId, paymentData) {
-    const product = getProductById(paymentData.productId);
+    const payment = AuctionData.payments.find(p => p.id === paymentId);
+    if (!payment) return { success: false, message: 'Payment not found' };
+
+    const product = getProductById(payment.productId);
     if (!product) return { success: false, message: 'Product not found' };
 
-    AuctionData.payments.push({
-        id: paymentId,
-        productId: paymentData.productId,
-        buyerId: paymentData.buyerId,
-        amount: paymentData.amount,
-        method: paymentData.method,
-        timestamp: new Date().toISOString()
-    });
+    payment.method = paymentData.method;
+    payment.transactionId = paymentData.transactionId;
+    payment.status = 'completed';
+    payment.completedAt = new Date().toISOString();
 
     product.status = 'sold';
+
+    if (product.highestBidderId) {
+        const buyer = getUserById(product.highestBidderId);
+        if (buyer) {
+            buyer.purchases.push({
+                productId: product.id,
+                productName: product.name,
+                price: product.currentBid,
+                sellerName: product.sellerName,
+                purchasedAt: new Date().toISOString()
+            });
+        }
+    }
+
+    const seller = getUserById(product.sellerId);
+    if (seller) {
+        seller.soldProducts.push({
+            productId: product.id,
+            productName: product.name,
+            soldPrice: product.currentBid,
+            buyerName: product.highestBidder,
+            soldAt: new Date().toISOString()
+        });
+    }
 
     AuctionData.adminActions.push({
         id: 'action_' + Date.now(),
         type: 'payment_received',
-        productId: paymentData.productId,
+        productId: product.id,
         adminId: AuctionData.currentUser?.id || 'system',
         timestamp: new Date().toISOString()
     });
@@ -980,11 +1054,27 @@ function processPayment(paymentId, paymentData) {
     return { success: true, message: 'Payment processed' };
 }
 
+function isPaymentTimedOut(product) {
+    if (product.status !== 'sold_pending_payment' || !product.endTime) return false;
+    const endedAt = new Date(product.endTime).getTime();
+    const oneHour = 60 * 60 * 1000;
+    return (Date.now() - endedAt) > oneHour;
+}
+
 function restartBid(productId) {
     const product = getProductById(productId);
     if (!product) return { success: false, message: 'Product not found' };
-    if (product.status !== 'sold_pending_payment' && product.status !== 'unsold') {
+    if (product.status === 'sold_pending_payment') {
+        if (!isPaymentTimedOut(product)) {
+            return { success: false, message: 'Payment is still pending. Relisting available 1 hour after auction ends.' };
+        }
+    } else if (product.status !== 'unsold') {
         return { success: false, message: 'Product cannot be restarted' };
+    }
+
+    const seller = getUserById(product.sellerId);
+    if (seller) {
+        seller.soldProducts = (seller.soldProducts || []).filter(sp => sp.productId !== productId);
     }
 
     product.status = 'pending';
@@ -1058,13 +1148,23 @@ function registerUser(userData) {
         return { success: false, message: 'Email already registered' };
     }
 
+    const role = userData.role || 'customer';
+    const firstName = userData.name ? userData.name.split(' ')[0].toLowerCase() : '';
+    const username = (role === 'customer' || role === 'seller') ? firstName : userData.username || firstName;
+
+    const existingUsername = AuctionData.users.find(u => u.username === username);
+    if (existingUsername) {
+        return { success: false, message: 'Username already taken' };
+    }
+
     const newUser = {
         id: 'user_' + Date.now(),
         name: userData.name,
+        username: username,
         email: userData.email,
         phone: userData.phone || '',
         password: userData.password,
-        role: userData.role || 'customer',
+        role: role,
         bankDetails: userData.bankDetails || {},
         address: userData.address || '',
         createdAt: new Date().toISOString(),
@@ -1077,10 +1177,12 @@ function registerUser(userData) {
     return { success: true, user: newUser };
 }
 
-function loginUser(email, password, role) {
-    const user = AuctionData.users.find(u => u.email === email && u.password === password);
+function loginUser(identifier, password, role) {
+    const user = AuctionData.users.find(u => 
+        (u.email === identifier || u.username === identifier) && u.password === password
+    );
     if (!user) {
-        return { success: false, message: 'Invalid email or password' };
+        return { success: false, message: 'Invalid username/email or password' };
     }
     if (role && user.role !== role) {
         return { success: false, message: 'Invalid role for this account' };

@@ -23,6 +23,7 @@
                         <a href="index.html" class="nav-link">Home</a>
                         <a href="categories.html" class="nav-link">Shop</a>
                         <a href="live-bids.html" class="nav-link">Live Bids</a>
+                        <a href="sold.html" class="nav-link">Sold</a>
                         <a href="dashboard.html" class="nav-link">Dashboard</a>
                         
                     </nav>
@@ -144,6 +145,7 @@
                         <li><a href="index.html" class="mobile-nav-link">Home</a></li>
                         <li><a href="categories.html" class="mobile-nav-link">Shop</a></li>
                         <li><a href="live-bids.html" class="mobile-nav-link">Live Bids</a></li>
+                        <li><a href="sold.html" class="mobile-nav-link">Sold</a></li>
                     </ul>
                     <div class="mobile-menu-divider"></div>
                     <div class="mobile-auth" id="mobileAuth">
@@ -357,7 +359,10 @@
                                 ${isAdmin && product.status === 'active' ? `
                                     <button class="btn btn-danger btn-sm end-bid-btn" data-product-id="${product.id}">End Bidding</button>
                                 ` : ''}
-                                ${isAdmin && (product.status === 'sold_pending_payment' || product.status === 'unsold') ? `
+                                ${isAdmin && product.status === 'sold_pending_payment' && isPaymentTimedOut(product) ? `
+                                    <button class="btn btn-outline btn-sm restart-bid-btn" data-product-id="${product.id}">Restart</button>
+                                ` : ''}
+                                ${isAdmin && product.status === 'unsold' ? `
                                     <button class="btn btn-outline btn-sm restart-bid-btn" data-product-id="${product.id}">Restart</button>
                                 ` : ''}
                             </div>
@@ -365,9 +370,14 @@
 
                         <div class="product-actions">
                             ${product.status === 'active' && App.currentUser && !isSeller ? `
-                                <button class="btn btn-primary btn-lg place-bid-main-btn" data-product-id="${product.id}">
-                                    Place Bid (Min: ${App.formatCurrency(minBid)})
-                                </button>
+                                ${App.userHasBidOnProduct(product.id)
+                                    ? `<button class="btn btn-outline btn-lg change-bid-main-btn" data-product-id="${product.id}">
+                                        Change Bid (Min: ${App.formatCurrency(minBid)})
+                                    </button>`
+                                    : `<button class="btn btn-primary btn-lg place-bid-main-btn" data-product-id="${product.id}">
+                                        Place Bid (Min: ${App.formatCurrency(minBid)})
+                                    </button>`
+                                }
                             ` : product.status === 'sold_pending_payment' && App.currentUser && App.currentUser.id === product.highestBidderId ? `
                                 <a href="payment.html?product=${product.id}" class="btn btn-primary btn-lg">Complete Payment</a>
                             ` : product.status === 'active' && (!App.currentUser || isSeller) ? `
@@ -385,7 +395,8 @@
                             <div class="card seller-notice">
                                 <h3 class="section-title seller-notice-title">Seller Information</h3>
                                 <p class="text-secondary">You listed this item. ${product.status === 'active' ? 'Bidding is live.' : product.status === 'pending' ? 'Waiting for admin to start bidding.' : 'Auction has ended.'}</p>
-                                ${product.status === 'sold_pending_payment' ? `<p class="text-warning seller-notice-detail">Waiting for buyer payment.</p>` : ''}
+                                ${product.status === 'sold_pending_payment' && !isPaymentTimedOut(product) ? `<p class="text-warning seller-notice-detail">Waiting for buyer payment.</p>` : ''}
+                                ${product.status === 'sold_pending_payment' && isPaymentTimedOut(product) ? `<p class="text-warning seller-notice-detail">Payment overdue. You can relist this item.</p><button class="btn btn-outline btn-sm restart-bid-btn mt-8" data-product-id="${product.id}">Relist Item</button>` : ''}
                                 ${product.status === 'sold' ? `<p class="text-success seller-notice-detail">Sold to ${product.highestBidder} for ${App.formatCurrency(product.currentBid)}.</p>` : ''}
                             </div>
                         ` : ''}
@@ -486,6 +497,15 @@
                     return;
                 }
                 App.openBidModal(productId);
+            });
+
+            document.querySelector('.change-bid-main-btn')?.addEventListener('click', () => {
+                if (!App.currentUser) {
+                    App.showToast('Login Required', 'Please login to change your bid', 'warning');
+                    App.navigate('login.html');
+                    return;
+                }
+                App.openChangeBidModal(productId);
             });
 
             document.querySelector('.start-bid-btn')?.addEventListener('click', (e) => {

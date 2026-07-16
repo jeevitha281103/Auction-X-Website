@@ -23,6 +23,7 @@
                         <a href="index.html" class="nav-link">Home</a>
                         <a href="categories.html" class="nav-link">Shop</a>
                         <a href="live-bids.html" class="nav-link">Live Bids</a>
+                        <a href="sold.html" class="nav-link">Sold</a>
                         <a href="dashboard.html" class="nav-link">Dashboard</a>
                         
                     </nav>
@@ -144,6 +145,7 @@
                         <li><a href="index.html" class="mobile-nav-link">Home</a></li>
                         <li><a href="categories.html" class="mobile-nav-link">Shop</a></li>
                         <li><a href="live-bids.html" class="mobile-nav-link">Live Bids</a></li>
+                        <li><a href="sold.html" class="mobile-nav-link">Sold</a></li>
                     </ul>
                     <div class="mobile-menu-divider"></div>
                     <div class="mobile-auth" id="mobileAuth">
@@ -224,6 +226,7 @@
                                     <option value="pending">Upcoming</option>
                                     <option value="active">Live Now</option>
                                     <option value="sold_pending_payment">Payment Pending</option>
+                                    <option value="sold">Sold</option>
                                     <option value="unsold">Unsold</option>
                                 </select>
                                 <select class="form-input" id="categoryFilter" style="width: auto; min-width: 180px;">
@@ -446,7 +449,11 @@
                     } else if (product.status === 'active') {
                         actionsHtml += `<button class="btn btn-warning btn-sm end-bid-btn" data-product-id="${product.id}">End Bid</button>`;
                     } else if (product.status === 'sold_pending_payment') {
-                        actionsHtml += `<span class="badge badge-warning">Payment Pending</span>`;
+                        if (isPaymentTimedOut(product)) {
+                            actionsHtml += `<button class="btn btn-outline btn-sm restart-bid-btn" data-product-id="${product.id}">Relist</button>`;
+                        } else {
+                            actionsHtml += `<span class="badge badge-warning">Payment Pending</span>`;
+                        }
                     } else if (product.status === 'sold') {
                         actionsHtml += `<span class="badge badge-success">Completed</span>`;
                     } else if (product.status === 'unsold' || product.status === 'ended') {

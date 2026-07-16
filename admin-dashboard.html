@@ -23,6 +23,7 @@
                         <a href="index.html" class="nav-link">Home</a>
                         <a href="categories.html" class="nav-link">Shop</a>
                         <a href="live-bids.html" class="nav-link">Live Bids</a>
+                        <a href="sold.html" class="nav-link">Sold</a>
                         <a href="dashboard.html" class="nav-link">Dashboard</a>
                         
                     </nav>
@@ -142,6 +143,7 @@
                         <li><a href="index.html" class="mobile-nav-link">Home</a></li>
                         <li><a href="categories.html" class="mobile-nav-link">Shop</a></li>
                         <li><a href="live-bids.html" class="mobile-nav-link">Live Bids</a></li>
+                        <li><a href="sold.html" class="mobile-nav-link">Sold</a></li>
                     </ul>
                     <div class="mobile-menu-divider"></div>
                     <div class="mobile-auth" id="mobileAuth">
@@ -547,7 +549,8 @@
                             <a href="product.html?id=${product.id}" class="btn btn-ghost btn-sm">View</a>
                             ${product.status === 'pending' ? `<button class="btn btn-primary btn-sm admin-start-bid" data-product-id="${product.id}">Start</button>` : ''}
                             ${product.status === 'active' ? `<button class="btn btn-warning btn-sm admin-end-bid" data-product-id="${product.id}">End</button>` : ''}
-                            ${(product.status === 'sold_pending_payment' || product.status === 'unsold') ? `<button class="btn btn-outline btn-sm admin-restart-bid" data-product-id="${product.id}">Restart</button>` : ''}
+                            ${product.status === 'sold_pending_payment' ? (isPaymentTimedOut(product) ? `<button class="btn btn-outline btn-sm admin-restart-bid" data-product-id="${product.id}">Restart</button>` : `<span class="badge badge-warning">Payment Pending</span>`) : ''}
+                            ${product.status === 'unsold' ? `<button class="btn btn-outline btn-sm admin-restart-bid" data-product-id="${product.id}">Restart</button>` : ''}
                         </div>
                     </td>
                 </tr>
@@ -688,13 +691,13 @@
                     start_bid: 'Started Bidding',
                     end_bid: 'Ended Bidding',
                     restart_bid: 'Restarted Bidding',
-                    payment_completed: 'Payment Completed'
+                    payment_received: 'Payment Received'
                 };
 
                 return `
                     <tr>
                         <td>${admin?.name || 'System'}</td>
-                        <td><span class="badge badge-info">${actionLabels[action.action] || action.action}</span></td>
+                        <td><span class="badge badge-info">${actionLabels[action.type] || action.type}</span></td>
                         <td>${product?.name || action.productId}</td>
                         <td class="text-secondary">${App.formatDateTime(action.timestamp)}</td>
                     </tr>

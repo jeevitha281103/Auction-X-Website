@@ -23,6 +23,7 @@
                         <a href="index.html" class="nav-link">Home</a>
                         <a href="categories.html" class="nav-link">Shop</a>
                         <a href="live-bids.html" class="nav-link">Live Bids</a>
+                        <a href="sold.html" class="nav-link">Sold</a>
                         <a href="dashboard.html" class="nav-link">Dashboard</a>
                     </nav>
 
@@ -70,8 +71,8 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="email" class="form-label">Email Address</label>
-                                <input type="email" id="email" name="email" class="form-input" placeholder="you@example.com" required autocomplete="email">
+                                <label for="loginIdentifier" class="form-label">Username or Email</label>
+                                <input type="text" id="loginIdentifier" name="identifier" class="form-input" placeholder="Enter username or email" required autocomplete="username">
                             </div>
 
                             <div class="form-group">
@@ -126,6 +127,11 @@
                             <div class="form-group">
                                 <label for="regEmail" class="form-label">Email Address <span class="text-error">*</span></label>
                                 <input type="email" id="regEmail" name="email" class="form-input" placeholder="you@example.com" required autocomplete="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="regUsername" class="form-label">Username (auto-generated from first name)</label>
+                                <input type="text" id="regUsername" name="username" class="form-input" placeholder="Your username" readonly style="background: var(--background); cursor: default;">
+                                <p class="form-help">Your username will be your first name in lowercase (e.g., "john" for "John Doe")</p>
                             </div>
                             <div class="form-group">
                                 <label for="phone" class="form-label">Phone Number <span class="text-error">*</span></label>
@@ -311,6 +317,13 @@
                 strengthEl.textContent = `Password strength: ${labels[s-1] || 'Very Weak'}`;
                 strengthEl.style.color = colors[s-1] || colors[0];
                 if (fb.length > 0) strengthEl.textContent += ` - Missing: ${fb.join(', ')}`;
+            });
+
+            const firstNameInput = document.getElementById('firstName');
+            const regUsernameInput = document.getElementById('regUsername');
+            firstNameInput?.addEventListener('input', () => {
+                const firstName = firstNameInput.value.trim().split(' ')[0].toLowerCase().replace(/[^a-z0-9_]/g, '');
+                regUsernameInput.value = firstName;
             });
         });
     </script>
