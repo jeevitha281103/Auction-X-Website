@@ -509,13 +509,15 @@
                 if (products.length === 0) {
                     grid.innerHTML = `
                         <div class="text-center py-32" style="grid-column: 1/-1;">
-                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom: 16px; opacity: 0.5;" aria-hidden="true">
-                                <circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>
-                            </svg>
+                            <span style="font-size: 48px; opacity: 0.5; display: block; margin-bottom: 16px;">😔</span>
                             <p class="text-secondary">No live auctions at the moment. Check back soon!</p>
-                            <a href="upcoming-section" class="btn btn-primary mt-16" onclick="document.getElementById('upcoming-title').scrollIntoView({behavior:'smooth'})">View Upcoming Auctions</a>
+                            <a href="#" class="btn btn-primary mt-16" id="viewUpcomingBtn">View Upcoming Auctions</a>
                         </div>
                     `;
+                    document.getElementById('viewUpcomingBtn')?.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        document.getElementById('upcoming-title')?.scrollIntoView({behavior:'smooth'});
+                    });
                     return;
                 }
                 grid.innerHTML = products.slice(0, 6).map(renderCard).join('');

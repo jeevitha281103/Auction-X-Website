@@ -889,6 +889,8 @@ function endExpiredAuctions() {
     }
 }
 
+loadData();
+
 function getCurrentUser() {
     const sessionData = sessionStorage.getItem('auctionx_session');
     if (sessionData) {
