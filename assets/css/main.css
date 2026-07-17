@@ -1222,11 +1222,18 @@ tr:hover td {
     align-items: center;
     color: rgba(255,255,255,0.7);
 }
-.footer-grid {
+.footer .container {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    gap: 24px;
+}
+.footer-grid {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
     gap: 24px;
 }
 .footer-brand {
@@ -2077,6 +2084,7 @@ tr:hover td {
     .categories-section,
     .featured-section,
     .upcoming-section { padding: 40px 0; }
+    .footer .container { flex-wrap: wrap; justify-content: center; gap: 12px; }
     .footer { height: auto; min-height: 56px; padding: 12px 0; }
     .footer-grid { flex-wrap: wrap; gap: 12px; justify-content: center; }
     .footer-nav { flex-wrap: wrap; justify-content: center; gap: 12px; }
@@ -2089,6 +2097,7 @@ tr:hover td {
 @media (max-width: 480px) {
     .hero-actions { flex-direction: column; }
     .hero-actions .btn { width: 100%; }
+    .footer .container { flex-direction: column; gap: 8px; text-align: center; }
     .footer-grid { flex-direction: column; gap: 8px; text-align: center; }
     .footer-nav { flex-direction: column; align-items: center; }
     .footer-col ul { flex-direction: column; align-items: center; gap: 8px; }
