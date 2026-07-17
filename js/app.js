@@ -69,11 +69,20 @@ const App = {
         }
         if (e.target.closest('#logoutBtn') || e.target.closest('#mobileLogoutBtn')) {
             e.preventDefault();
-            logout();
-            this.currentUser = null;
-            this.bidTimers.forEach(timerId => clearInterval(timerId));
-            this.bidTimers.clear();
-            window.location.replace('index.html');
+            const currentId = this.currentUser?.id;
+            this.removeSavedAccount(currentId);
+            const accounts = this.getSavedAccounts();
+            const nextAccount = accounts.find(a => getUserById(a.id));
+            if (nextAccount) {
+                this.switchAccount(nextAccount.id);
+            } else {
+                accounts.forEach(a => this.removeSavedAccount(a.id));
+                logout();
+                this.currentUser = null;
+                this.bidTimers.forEach(timerId => clearInterval(timerId));
+                this.bidTimers.clear();
+                window.location.replace('index.html');
+            }
         }
         if (e.target.closest('.place-bid-btn')) {
             const btn = e.target.closest('.place-bid-btn');
@@ -301,6 +310,7 @@ const App = {
         setCurrentUser(user);
         this.currentUser = user;
         this.updateHeader();
+        this.initProductCards();
         this.toggleUserDropdown(false);
         this.showToast('Switched Account', `Now logged in as ${user.name}`, 'success');
     },
