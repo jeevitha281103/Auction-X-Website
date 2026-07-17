@@ -3,7 +3,7 @@ const AuctionData = {
         {
             id: 'admin_001',
             name: 'Admin User',
-            username: 'admin',
+            username: 'Admin',
             email: 'admin@auctionx.com',
             phone: '9876543210',
             password: 'admin123',
@@ -21,7 +21,7 @@ const AuctionData = {
         {
             id: 'seller_001',
             name: 'Richard Kelly',
-            username: 'richard',
+            username: 'Richard',
             email: 'richard@kelly.com',
             phone: '9876543211',
             password: 'richard123',
@@ -39,7 +39,7 @@ const AuctionData = {
         {
             id: 'seller_002',
             name: 'Sabrina Carpenter',
-            username: 'sabrina',
+            username: 'Sabrina',
             email: 'sabrina@carpenter.com',
             phone: '9876543213',
             password: 'sabrina123',
@@ -57,7 +57,7 @@ const AuctionData = {
         {
             id: 'seller_003',
             name: 'John Carter',
-            username: 'john',
+            username: 'John',
             email: 'john@carter.com',
             phone: '9876543214',
             password: 'john123',
@@ -75,7 +75,7 @@ const AuctionData = {
         {
             id: 'seller_004',
             name: 'Harvey Miller',
-            username: 'harvey',
+            username: 'Harvey',
             email: 'harvey@miller.com',
             phone: '9876543215',
             password: 'harvey123',
@@ -93,7 +93,7 @@ const AuctionData = {
         {
             id: 'customer_001',
             name: 'Elayna Galea',
-            username: 'elayna',
+            username: 'Elayna',
             email: 'elayna@galea.com',
             phone: '9876543220',
             password: 'elayna123',
@@ -111,7 +111,7 @@ const AuctionData = {
         {
             id: 'customer_002',
             name: 'Colleen Hoover',
-            username: 'colleen',
+            username: 'Colleen',
             email: 'colleen@hoover.com',
             phone: '9876543221',
             password: 'colleen123',
@@ -129,7 +129,7 @@ const AuctionData = {
         {
             id: 'customer_003',
             name: 'Mercedes Ron',
-            username: 'mercedes',
+            username: 'Mercedes',
             email: 'mercedes@ron.com',
             phone: '9876543222',
             password: 'mercedes123',
@@ -147,7 +147,7 @@ const AuctionData = {
         {
             id: 'customer_004',
             name: 'Rebecca Yarros',
-            username: 'rebecca',
+            username: 'Rebecca',
             email: 'rebecca@yarros.com',
             phone: '9876543223',
             password: 'rebecca123',
@@ -165,7 +165,7 @@ const AuctionData = {
         {
             id: 'customer_005',
             name: 'Stephanie Archer',
-            username: 'stephanie',
+            username: 'Stephanie',
             email: 'stephanie@archer.com',
             phone: '9876543224',
             password: 'stephanie123',
@@ -183,7 +183,7 @@ const AuctionData = {
         {
             id: 'customer_006',
             name: 'Robin Williams',
-            username: 'robin',
+            username: 'Robin',
             email: 'robin@williams.com',
             phone: '9876543225',
             password: 'robin123',
@@ -201,7 +201,7 @@ const AuctionData = {
         {
             id: 'customer_007',
             name: 'Carl Winter',
-            username: 'carl',
+            username: 'Carl',
             email: 'carl@winter.com',
             phone: '9876543226',
             password: 'carl123',
@@ -219,7 +219,7 @@ const AuctionData = {
         {
             id: 'customer_008',
             name: 'Holly Jackson',
-            username: 'holly',
+            username: 'Holly',
             email: 'holly@jackson.com',
             phone: '9876543227',
             password: 'holly123',
@@ -1208,7 +1208,7 @@ function registerUser(userData) {
 
 function loginUser(identifier, password, role) {
     const user = AuctionData.users.find(u => 
-        (u.email === identifier || u.username === identifier) && u.password === password
+        (u.email.toLowerCase() === identifier.toLowerCase() || u.username.toLowerCase() === identifier.toLowerCase()) && u.password === password
     );
     if (!user) {
         return { success: false, message: 'Invalid username/email or password' };
