@@ -88,6 +88,10 @@ const App = {
             const btn = e.target.closest('.place-bid-btn');
             const productId = btn.dataset.productId;
             if (productId && this.currentUser) {
+                if (this.currentUser.role !== 'customer') {
+                    this.showToast('Restricted', 'Only customers can place bids', 'warning');
+                    return;
+                }
                 this.openBidModal(productId);
             } else if (!this.currentUser) {
                 this.showToast('Login Required', 'Please login to place a bid', 'warning');
@@ -98,6 +102,10 @@ const App = {
             const btn = e.target.closest('.change-bid-btn');
             const productId = btn.dataset.productId;
             if (productId && this.currentUser) {
+                if (this.currentUser.role !== 'customer') {
+                    this.showToast('Restricted', 'Only customers can place bids', 'warning');
+                    return;
+                }
                 this.openChangeBidModal(productId);
             } else if (!this.currentUser) {
                 this.showToast('Login Required', 'Please login to change your bid', 'warning');
@@ -231,6 +239,12 @@ const App = {
                 else if (role === 'admin') dashboardLink.href = 'admin-dashboard.html';
                 else dashboardLink.href = 'dashboard.html';
             }
+
+            document.querySelectorAll('a[href="dashboard.html"]').forEach(link => {
+                if (role === 'seller') link.href = 'seller-dashboard.html';
+                else if (role === 'admin') link.href = 'admin-dashboard.html';
+                else link.href = 'dashboard.html';
+            });
 
             const sellerLink = document.getElementById('sellerDashboardLink');
             const mobileSellerLink = document.getElementById('mobileSellerLink');
@@ -557,8 +571,14 @@ const App = {
 
             const btn = card.querySelector('.place-bid-btn');
             if (btn) {
-                btn.disabled = product.status !== 'active' || (this.currentUser && this.currentUser.id === product.sellerId);
+                btn.disabled = product.status !== 'active' || (this.currentUser && this.currentUser.id === product.sellerId) || (this.currentUser && this.currentUser.role !== 'customer');
                 btn.textContent = product.status === 'active' ? 'Place Bid' : product.status === 'sold_pending_payment' ? 'Payment Pending' : product.status === 'sold' ? 'Sold' : 'Bidding Ended';
+
+                if (this.currentUser && this.currentUser.role !== 'customer' && product.status === 'active') {
+                    btn.textContent = 'Customers Only';
+                } else if (this.currentUser && this.currentUser.id === product.sellerId && product.status === 'active') {
+                    btn.textContent = 'Your Listing';
+                }
 
                 if (product.status === 'active' && this.userHasBidOnProduct(productId)) {
                     btn.classList.remove('place-bid-btn');
@@ -619,8 +639,16 @@ const App = {
             const btn = card.querySelector('.place-bid-btn');
             if (btn) {
                 btn.dataset.productId = productId;
-                btn.disabled = product.status !== 'active' || (this.currentUser && this.currentUser.id === product.sellerId);
+                const isSeller = this.currentUser && this.currentUser.id === product.sellerId;
+                const isNonCustomer = this.currentUser && this.currentUser.role !== 'customer';
+                btn.disabled = product.status !== 'active' || isSeller || isNonCustomer;
                 btn.textContent = product.status === 'active' ? 'Place Bid' : product.status === 'sold_pending_payment' ? 'Payment Pending' : product.status === 'sold' ? 'Sold' : 'Bidding Ended';
+
+                if (isNonCustomer && product.status === 'active') {
+                    btn.textContent = 'Customers Only';
+                } else if (isSeller && product.status === 'active') {
+                    btn.textContent = 'Your Listing';
+                }
 
                 if (product.status === 'active' && this.userHasBidOnProduct(productId)) {
                     btn.classList.remove('place-bid-btn');

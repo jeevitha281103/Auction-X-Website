@@ -459,8 +459,14 @@
 
             const lostBids = allBids.filter(bid => {
                 const product = getProductById(bid.productId);
-                return product && (product.status === 'sold' || product.status === 'ended' || product.status === 'unsold') &&
-                       product.highestBidderId !== user.id;
+                if (!product || product.highestBidderId === user.id) return false;
+                if (product.status === 'sold' || product.status === 'ended' || product.status === 'unsold') return true;
+                if (product.status === 'active' && product.bidHistory.length > 1) {
+                    const userBids = product.bidHistory.filter(b => b.bidderId === user.id);
+                    const maxUserBid = userBids.length > 0 ? Math.max(...userBids.map(b => b.amount)) : 0;
+                    return maxUserBid < product.currentBid;
+                }
+                return false;
             });
 
             document.getElementById('activeCount').textContent = activeBids.length;

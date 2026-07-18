@@ -947,6 +947,10 @@ function placeBid(productId, bidderId, amount) {
         return { success: false, message: 'Auction is not active' };
     }
 
+    if (bidder.role !== 'customer') {
+        return { success: false, message: 'Only customers can place bids' };
+    }
+
     if (product.sellerId === bidderId) {
         return { success: false, message: 'Cannot bid on your own item' };
     }
