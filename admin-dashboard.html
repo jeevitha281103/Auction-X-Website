@@ -446,7 +446,7 @@
             const payments = AuctionData.payments;
             const adminActions = AuctionData.adminActions;
 
-            document.getElementById('statTotalUsers').textContent = users.length;
+            document.getElementById('statTotalUsers').textContent = users.filter(u => u.role !== 'admin').length;
             document.getElementById('statTotalProducts').textContent = products.length;
             document.getElementById('statActiveBids').textContent = products.filter(p => p.status === 'active').length;
 
