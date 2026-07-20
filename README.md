@@ -6,6 +6,7 @@ A complete auction website built with HTML, CSS, and JavaScript (no backend requ
 
 - **Name**: Jeevitha
 - **Email**: jeevitharaja2811@gmail.com
+- **LinkedIn**: [R.S. Jeevitha Raja](https://www.linkedin.com/in/r-s-jeevitha-raja-7692642b3?utm_source=share_via&utm_content=profile&utm_medium=member_android)
 
 ## Features
 
