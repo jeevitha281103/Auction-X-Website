@@ -7,6 +7,7 @@ A complete online auction platform built with vanilla HTML, CSS, and JavaScript.
 - **Name**: Jeevitha
 - **Email**: [jeevitharaja2811@gmail.com](mailto:jeevitharaja2811@gmail.com)
 - **LinkedIn**: [R.S. Jeevitha Raja](https://www.linkedin.com/in/r-s-jeevitha-raja-7692642b3?utm_source=share_via&utm_content=profile&utm_medium=member_android)
+- **GitHub**: [jeevitha281103](https://github.com/jeevitha281103)
 
 ## Overview
 
