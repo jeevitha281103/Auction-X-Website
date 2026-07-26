@@ -866,7 +866,109 @@ function loadData() {
         if (saved.adminActions) AuctionData.adminActions = saved.adminActions;
     }
 
+    seedInitialData();
     endExpiredAuctions();
+}
+
+function seedInitialData() {
+    if (localStorage.getItem('auctionx_data')) return;
+
+    const now = Date.now();
+    const bidMs = (productId, bidderId, amount, minutesAgo) => {
+        const product = getProductById(productId);
+        const bidder = getUserById(bidderId);
+        if (!product || !bidder) return;
+        const ts = new Date(now - minutesAgo * 60000).toISOString();
+        product.bidHistory.push({ bidderId, bidderName: bidder.name, amount, timestamp: ts });
+        product.currentBid = amount;
+        product.highestBidder = bidder.name;
+        product.highestBidderId = bidderId;
+        AuctionData.bids.push({ id: 'bid_init_' + productId + '_' + bidderId, productId, bidderId, bidderName: bidder.name, amount, timestamp: ts });
+    };
+
+    // --- Active auctions with bids ---
+    bidMs('prod_001', 'customer_001', 70000, 10);
+    bidMs('prod_001', 'customer_002', 72000, 8);
+    bidMs('prod_001', 'customer_003', 75000, 5);
+    let p = getProductById('prod_001');
+    if (p) { p.status = 'active'; p.startTime = new Date(now - 900000).toISOString(); p.endTime = new Date(now + 300000).toISOString(); }
+
+    bidMs('prod_015', 'customer_001', 88000, 12);
+    bidMs('prod_015', 'customer_004', 91000, 7);
+    p = getProductById('prod_015');
+    if (p) { p.status = 'active'; p.startTime = new Date(now - 1200000).toISOString(); p.endTime = new Date(now + 600000).toISOString(); }
+
+    bidMs('prod_027', 'customer_002', 52000, 15);
+    p = getProductById('prod_027');
+    if (p) { p.status = 'active'; p.startTime = new Date(now - 1500000).toISOString(); p.endTime = new Date(now + 900000).toISOString(); }
+
+    bidMs('prod_041', 'customer_003', 190000, 3);
+    bidMs('prod_041', 'customer_005', 195000, 1);
+    p = getProductById('prod_041');
+    if (p) { p.status = 'active'; p.startTime = new Date(now - 600000).toISOString(); p.endTime = new Date(now + 120000).toISOString(); }
+
+    bidMs('prod_054', 'customer_005', 91000, 20);
+    p = getProductById('prod_054');
+    if (p) { p.status = 'active'; p.startTime = new Date(now - 1800000).toISOString(); p.endTime = new Date(now + 1200000).toISOString(); }
+
+    // --- Sold products (paid) ---
+    const soldItems = [
+        { id: 'prod_003', bidder: 'customer_002', amt: 355000 },
+        { id: 'prod_016', bidder: 'customer_003', amt: 440000 },
+        { id: 'prod_030', bidder: 'customer_004', amt: 160000 },
+        { id: 'prod_043', bidder: 'customer_005', amt: 350000 },
+        { id: 'prod_055', bidder: 'customer_001', amt: 34000 },
+        { id: 'prod_062', bidder: 'customer_006', amt: 20000 },
+    ];
+    soldItems.forEach(item => {
+        const product = getProductById(item.id);
+        const bidder = getUserById(item.bidder);
+        if (!product || !bidder) return;
+        product.status = 'sold';
+        product.highestBidder = bidder.name;
+        product.highestBidderId = item.bidder;
+        product.currentBid = item.amt;
+        product.startTime = new Date(now - 7200000).toISOString();
+        product.endTime = new Date(now - 3600000).toISOString();
+        AuctionData.payments.push({
+            id: 'payment_init_' + product.id, productId: product.id, buyerId: item.bidder,
+            amount: item.amt, status: 'completed', method: 'credit_card',
+            transactionId: 'TXN_INIT_' + product.id,
+            dueDate: new Date(now - 1800000).toISOString(),
+            completedAt: new Date(now - 1200000).toISOString()
+        });
+        bidder.purchases.push({ productId: product.id, productName: product.name, price: item.amt, sellerName: product.sellerName, purchasedAt: new Date(now - 1200000).toISOString() });
+        const seller = getUserById(product.sellerId);
+        if (seller) seller.soldProducts.push({ productId: product.id, productName: product.name, soldPrice: item.amt, buyerName: bidder.name, soldAt: new Date(now - 1200000).toISOString() });
+    });
+
+    // --- Sold pending payment ---
+    const pendingItems = [
+        { id: 'prod_008', bidder: 'customer_006', amt: 220000 },
+        { id: 'prod_019', bidder: 'customer_007', amt: 305000 },
+    ];
+    pendingItems.forEach(item => {
+        const product = getProductById(item.id);
+        const bidder = getUserById(item.bidder);
+        if (!product || !bidder) return;
+        product.status = 'sold_pending_payment';
+        product.highestBidder = bidder.name;
+        product.highestBidderId = item.bidder;
+        product.currentBid = item.amt;
+        product.startTime = new Date(now - 7200000).toISOString();
+        product.endTime = new Date(now - 3600000).toISOString();
+        AuctionData.payments.push({
+            id: 'payment_init_' + product.id, productId: product.id, buyerId: item.bidder,
+            amount: item.amt, status: 'pending',
+            dueDate: new Date(now + 3600000).toISOString()
+        });
+    });
+
+    // --- Unsold ---
+    const unsold = getProductById('prod_010');
+    if (unsold) { unsold.status = 'unsold'; unsold.startTime = new Date(now - 7200000).toISOString(); unsold.endTime = new Date(now - 3600000).toISOString(); }
+
+    saveData();
 }
 
 function endExpiredAuctions() {
