@@ -892,24 +892,29 @@ function seedInitialData() {
     bidMs('prod_001', 'customer_003', 75000, 5);
     let p = getProductById('prod_001');
     if (p) { p.status = 'active'; p.startTime = new Date(now - 900000).toISOString(); p.endTime = new Date(now + 300000).toISOString(); }
+    AuctionData.adminActions.push({ id: 'action_init_prod_001', type: 'start_bid', productId: 'prod_001', adminId: 'admin_001', timestamp: new Date(now - 900000).toISOString() });
 
     bidMs('prod_015', 'customer_001', 88000, 12);
     bidMs('prod_015', 'customer_004', 91000, 7);
     p = getProductById('prod_015');
     if (p) { p.status = 'active'; p.startTime = new Date(now - 1200000).toISOString(); p.endTime = new Date(now + 600000).toISOString(); }
+    AuctionData.adminActions.push({ id: 'action_init_prod_015', type: 'start_bid', productId: 'prod_015', adminId: 'admin_001', timestamp: new Date(now - 1200000).toISOString() });
 
     bidMs('prod_027', 'customer_002', 52000, 15);
     p = getProductById('prod_027');
     if (p) { p.status = 'active'; p.startTime = new Date(now - 1500000).toISOString(); p.endTime = new Date(now + 900000).toISOString(); }
+    AuctionData.adminActions.push({ id: 'action_init_prod_027', type: 'start_bid', productId: 'prod_027', adminId: 'admin_001', timestamp: new Date(now - 1500000).toISOString() });
 
     bidMs('prod_041', 'customer_003', 190000, 3);
     bidMs('prod_041', 'customer_005', 195000, 1);
     p = getProductById('prod_041');
     if (p) { p.status = 'active'; p.startTime = new Date(now - 600000).toISOString(); p.endTime = new Date(now + 120000).toISOString(); }
+    AuctionData.adminActions.push({ id: 'action_init_prod_041', type: 'start_bid', productId: 'prod_041', adminId: 'admin_001', timestamp: new Date(now - 600000).toISOString() });
 
     bidMs('prod_054', 'customer_005', 91000, 20);
     p = getProductById('prod_054');
     if (p) { p.status = 'active'; p.startTime = new Date(now - 1800000).toISOString(); p.endTime = new Date(now + 1200000).toISOString(); }
+    AuctionData.adminActions.push({ id: 'action_init_prod_054', type: 'start_bid', productId: 'prod_054', adminId: 'admin_001', timestamp: new Date(now - 1800000).toISOString() });
 
     // --- Sold products (paid) ---
     const soldItems = [
@@ -920,10 +925,13 @@ function seedInitialData() {
         { id: 'prod_055', bidder: 'customer_001', amt: 34000 },
         { id: 'prod_062', bidder: 'customer_006', amt: 20000 },
     ];
-    soldItems.forEach(item => {
+    soldItems.forEach((item, idx) => {
         const product = getProductById(item.id);
         const bidder = getUserById(item.bidder);
         if (!product || !bidder) return;
+        const bidTs = new Date(now - 7200000 + idx * 60000).toISOString();
+        product.bidHistory.push({ bidderId: item.bidder, bidderName: bidder.name, amount: item.amt, timestamp: bidTs });
+        AuctionData.bids.push({ id: 'bid_init_' + product.id, productId: product.id, bidderId: item.bidder, bidderName: bidder.name, amount: item.amt, timestamp: bidTs });
         product.status = 'sold';
         product.highestBidder = bidder.name;
         product.highestBidderId = item.bidder;
@@ -940,6 +948,7 @@ function seedInitialData() {
         bidder.purchases.push({ productId: product.id, productName: product.name, price: item.amt, sellerName: product.sellerName, purchasedAt: new Date(now - 1200000).toISOString() });
         const seller = getUserById(product.sellerId);
         if (seller) seller.soldProducts.push({ productId: product.id, productName: product.name, soldPrice: item.amt, buyerName: bidder.name, soldAt: new Date(now - 1200000).toISOString() });
+        AuctionData.adminActions.push({ id: 'action_init_sold_' + product.id, type: 'payment_received', productId: product.id, adminId: 'admin_001', timestamp: new Date(now - 1200000 + idx * 60000).toISOString() });
     });
 
     // --- Sold pending payment ---
@@ -947,26 +956,31 @@ function seedInitialData() {
         { id: 'prod_008', bidder: 'customer_006', amt: 220000 },
         { id: 'prod_019', bidder: 'customer_007', amt: 305000 },
     ];
-    pendingItems.forEach(item => {
+    pendingItems.forEach((item, idx) => {
         const product = getProductById(item.id);
         const bidder = getUserById(item.bidder);
         if (!product || !bidder) return;
+        const bidTs = new Date(now - 10800000 + idx * 60000).toISOString();
+        product.bidHistory.push({ bidderId: item.bidder, bidderName: bidder.name, amount: item.amt, timestamp: bidTs });
+        AuctionData.bids.push({ id: 'bid_init_' + product.id, productId: product.id, bidderId: item.bidder, bidderName: bidder.name, amount: item.amt, timestamp: bidTs });
         product.status = 'sold_pending_payment';
         product.highestBidder = bidder.name;
         product.highestBidderId = item.bidder;
         product.currentBid = item.amt;
-        product.startTime = new Date(now - 7200000).toISOString();
-        product.endTime = new Date(now - 3600000).toISOString();
+        product.startTime = new Date(now - 10800000).toISOString();
+        product.endTime = new Date(now - 7200000).toISOString();
         AuctionData.payments.push({
             id: 'payment_init_' + product.id, productId: product.id, buyerId: item.bidder,
             amount: item.amt, status: 'pending',
-            dueDate: new Date(now + 3600000).toISOString()
+            dueDate: new Date(now - 1800000).toISOString()
         });
+        AuctionData.adminActions.push({ id: 'action_init_pend_' + product.id, type: 'end_bid', productId: product.id, adminId: 'admin_001', timestamp: new Date(now - 3600000 + idx * 60000).toISOString() });
     });
 
     // --- Unsold ---
     const unsold = getProductById('prod_010');
     if (unsold) { unsold.status = 'unsold'; unsold.startTime = new Date(now - 7200000).toISOString(); unsold.endTime = new Date(now - 3600000).toISOString(); }
+    AuctionData.adminActions.push({ id: 'action_init_unsold_prod_010', type: 'end_bid', productId: 'prod_010', adminId: 'admin_001', timestamp: new Date(now - 3600000).toISOString() });
 
     saveData();
 }
