@@ -831,39 +831,44 @@ function loadData() {
 
     const data = localStorage.getItem('auctionx_data');
     if (data) {
-        const saved = JSON.parse(data);
-        if (saved.users) {
-            saved.users.forEach(savedUser => {
-                if (hardcodedUserIds.has(savedUser.id)) {
-                    const existing = AuctionData.users.find(u => u.id === savedUser.id);
-                    if (existing) {
-                        if (savedUser.soldProducts) existing.soldProducts = savedUser.soldProducts;
-                        if (savedUser.purchases) existing.purchases = savedUser.purchases;
+        try {
+            const saved = JSON.parse(data);
+            if (saved.users) {
+                saved.users.forEach(savedUser => {
+                    if (hardcodedUserIds.has(savedUser.id)) {
+                        const existing = AuctionData.users.find(u => u.id === savedUser.id);
+                        if (existing) {
+                            if (savedUser.soldProducts) existing.soldProducts = savedUser.soldProducts;
+                            if (savedUser.purchases) existing.purchases = savedUser.purchases;
+                        }
+                    } else {
+                        AuctionData.users.push(savedUser);
                     }
-                } else {
-                    AuctionData.users.push(savedUser);
-                }
-            });
+                });
+            }
+            if (saved.products) {
+                saved.products.forEach(savedProduct => {
+                    const existing = AuctionData.products.find(p => p.id === savedProduct.id);
+                    if (existing) {
+                        existing.status = savedProduct.status;
+                        existing.currentBid = savedProduct.currentBid;
+                        existing.highestBidder = savedProduct.highestBidder;
+                        existing.highestBidderId = savedProduct.highestBidderId;
+                        existing.bidHistory = savedProduct.bidHistory;
+                        existing.startTime = savedProduct.startTime;
+                        existing.endTime = savedProduct.endTime;
+                    } else {
+                        AuctionData.products.push(savedProduct);
+                    }
+                });
+            }
+            if (saved.bids) AuctionData.bids = saved.bids;
+            if (saved.payments) AuctionData.payments = saved.payments;
+            if (saved.adminActions) AuctionData.adminActions = saved.adminActions;
+        } catch (error) {
+            console.warn('Saved AuctionX data is invalid. Loading the bundled demo data instead.', error);
+            localStorage.removeItem('auctionx_data');
         }
-        if (saved.products) {
-            saved.products.forEach(savedProduct => {
-                const existing = AuctionData.products.find(p => p.id === savedProduct.id);
-                if (existing) {
-                    existing.status = savedProduct.status;
-                    existing.currentBid = savedProduct.currentBid;
-                    existing.highestBidder = savedProduct.highestBidder;
-                    existing.highestBidderId = savedProduct.highestBidderId;
-                    existing.bidHistory = savedProduct.bidHistory;
-                    existing.startTime = savedProduct.startTime;
-                    existing.endTime = savedProduct.endTime;
-                } else {
-                    AuctionData.products.push(savedProduct);
-                }
-            });
-        }
-        if (saved.bids) AuctionData.bids = saved.bids;
-        if (saved.payments) AuctionData.payments = saved.payments;
-        if (saved.adminActions) AuctionData.adminActions = saved.adminActions;
     }
 
     seedInitialData();
@@ -871,7 +876,19 @@ function loadData() {
 }
 
 function seedInitialData() {
-    if (localStorage.getItem('auctionx_data')) return;
+    // Older GitHub Pages visitors already have auctionx_data, but that data
+    // predates the sales/payment demo records. Detect the complete seed by its
+    // stable IDs rather than by the existence of localStorage, so it upgrades
+    // those visitors once without duplicating records on later page loads.
+    const expectedPaymentIds = [
+        'payment_init_prod_003', 'payment_init_prod_016', 'payment_init_prod_030',
+        'payment_init_prod_043', 'payment_init_prod_055', 'payment_init_prod_062',
+        'payment_init_prod_008', 'payment_init_prod_019'
+    ];
+    const hasCurrentDemoData = expectedPaymentIds.every(id =>
+        AuctionData.payments.some(payment => payment.id === id)
+    );
+    if (hasCurrentDemoData) return;
 
     const now = Date.now();
     const bidMs = (productId, bidderId, amount, minutesAgo) => {
