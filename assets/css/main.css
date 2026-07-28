@@ -662,12 +662,27 @@ tr:hover td {
     align-items: center;
     gap: 8px;
 }
+.logo > svg {
+    display: none;
+}
+.logo::before {
+    content: '';
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
+    background: url('../images/auctionx-logo.svg') center / contain no-repeat;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.24));
+}
 .logo:hover {
     color: rgba(255,255,255,0.8);
     text-decoration: none;
 }
 .logo-text {
     color: white;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 1.35rem;
+    letter-spacing: 0.025em;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 .nav-main {
     display: flex;
