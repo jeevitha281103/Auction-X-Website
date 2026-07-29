@@ -184,28 +184,7 @@
                             </div>
                             <div class="hero-right">
                                 <div class="hero-gallery" id="heroGallery">
-                                    <div class="hero-gallery-track" id="heroGalleryTrack">
-                                        <a href="product.html?id=prod_001" class="hero-gallery-slide">
-                                            <img src="assets/images/fine_art/Barcelona Oil on Canvas.jpg" alt="Barcelona Oil on Canvas" class="hero-slide-image">
-                                            <span class="hero-slide-name">Barcelona Oil on Canvas</span>
-                                        </a>
-                                        <a href="product.html?id=prod_015" class="hero-gallery-slide">
-                                            <img src="assets/images/antique_furniture/Georgian Mahogany Chest of Drawers.jpg" alt="Georgian Mahogany Chest of Drawers" class="hero-slide-image">
-                                            <span class="hero-slide-name">Georgian Mahogany Chest of Drawers</span>
-                                        </a>
-                                        <a href="product.html?id=prod_027" class="hero-gallery-slide">
-                                            <img src="assets/images/antique_jewellery/Victorian Diamond Necklace.jpg" alt="Victorian Diamond Necklace" class="hero-slide-image">
-                                            <span class="hero-slide-name">Victorian Diamond Necklace</span>
-                                        </a>
-                                        <a href="product.html?id=prod_041" class="hero-gallery-slide">
-                                            <img src="assets/images/collectibles/1907 Saint-Gaudens Double Eagle.jpg" alt="1907 Saint-Gaudens Double Eagle" class="hero-slide-image">
-                                            <span class="hero-slide-name">1907 Saint-Gaudens Double Eagle</span>
-                                        </a>
-                                        <a href="product.html?id=prod_054" class="hero-gallery-slide">
-                                            <img src="assets/images/decorative_arts/Waterford Crystal Chandelier.jpg" alt="Waterford Crystal Chandelier" class="hero-slide-image">
-                                            <span class="hero-slide-name">Waterford Crystal Chandelier</span>
-                                        </a>
-                                    </div>
+                                    <div class="hero-gallery-track" id="heroGalleryTrack"></div>
                                     <div class="hero-gallery-dots" id="heroGalleryDots"></div>
                                 </div>
                             </div>
@@ -375,6 +354,17 @@
                 const track = document.getElementById('heroGalleryTrack');
                 const dotsContainer = document.getElementById('heroGalleryDots');
                 if (!track || !dotsContainer) return;
+                const heroProducts = (AuctionData.products || [])
+                    .filter(product => (product.status === 'active' || product.status === 'pending') && product.images?.[0])
+                    .sort((a, b) => a.name.localeCompare(b.name));
+                if (!heroProducts.length) {
+                    document.getElementById('heroGallery')?.classList.add('hidden');
+                    return;
+                }
+                track.innerHTML = heroProducts.map(product => `
+                    <a href="product.html?id=${product.id}" class="hero-gallery-slide" aria-label="View ${App.escapeHtml(product.name)}">
+                        <img src="${product.images[0]}" alt="${App.escapeHtml(product.name)}" class="hero-slide-image">
+                    </a>`).join('');
                 const slides = track.querySelectorAll('.hero-gallery-slide');
                 slides.forEach((_, i) => {
                     const dot = document.createElement('button');
@@ -505,7 +495,7 @@
 
             function renderFeaturedProducts() {
                 const grid = document.getElementById('featuredProducts');
-                const products = AuctionData.products.filter(p => p.status === 'active');
+                const products = AuctionData.products.filter(p => p.status === 'active').sort((a, b) => a.name.localeCompare(b.name));
                 if (products.length === 0) {
                     grid.innerHTML = `
                         <div class="text-center py-32" style="grid-column: 1/-1;">
@@ -526,7 +516,7 @@
 
             function renderUpcomingProducts() {
                 const grid = document.getElementById('upcomingProducts');
-                const products = AuctionData.products.filter(p => p.status === 'pending');
+                const products = AuctionData.products.filter(p => p.status === 'pending').sort((a, b) => a.name.localeCompare(b.name));
                 if (products.length === 0) {
                     grid.innerHTML = `
                         <div class="text-center py-32" style="grid-column: 1/-1;">

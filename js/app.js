@@ -12,7 +12,48 @@ const App = {
         this.checkAuth();
         this.bindGlobalEvents();
         this.updateHeader();
+        this.setupBrandIcon();
+        this.setupSearchSuggestions();
+        this.setupQuickAccountLink();
         this.startBidTimers();
+    },
+
+    setupBrandIcon() {
+        let icon = document.querySelector('link[rel="icon"]');
+        if (!icon) {
+            icon = document.createElement('link');
+            icon.rel = 'icon';
+            document.head.appendChild(icon);
+        }
+        icon.type = 'image/svg+xml';
+        icon.href = 'assets/images/auctionx-logo.svg';
+    },
+
+    setupSearchSuggestions() {
+        document.querySelectorAll('#searchSuggestions').forEach(container => {
+            container.innerHTML = `<p class="search-hint">Popular: <a href="categories.html?category=fine_art">Fine Art</a><a href="categories.html?category=antique_furniture">Antique Furniture</a><a href="categories.html?category=antique_jewellery">Antique Jewellery</a><a href="categories.html?category=collectibles">Collectibles</a><a href="categories.html?category=decorative_arts">Decorative Arts</a></p>`;
+        });
+    },
+
+    setupQuickAccountLink() {
+        const search = document.getElementById('searchToggle');
+        if (!search || document.getElementById('quickAccountLink')) return;
+        const link = document.createElement('a');
+        link.id = 'quickAccountLink';
+        link.className = 'btn btn-ghost btn-icon quick-account-link';
+        search.insertAdjacentElement('afterend', link);
+        this.updateQuickAccountLink();
+    },
+
+    updateQuickAccountLink() {
+        const link = document.getElementById('quickAccountLink');
+        if (!link) return;
+        const signedIn = Boolean(this.currentUser);
+        link.href = signedIn ? 'profile.html' : 'login.html';
+        link.setAttribute('aria-label', signedIn ? 'Open profile' : 'Login');
+        link.innerHTML = signedIn
+            ? '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c.8-4.1 3.5-6 8-6s7.2 1.9 8 6"/></svg>'
+            : '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M16 11h6"/></svg>';
     },
 
     checkAuth() {
@@ -201,6 +242,7 @@ const App = {
         const userMenu = document.getElementById('userMenu');
         const mobileAuth = document.getElementById('mobileAuth');
         const mobileUser = document.getElementById('mobileUser');
+        this.updateQuickAccountLink();
 
         if (this.currentUser) {
             authButtons?.classList.add('hidden');
@@ -572,7 +614,7 @@ const App = {
             const btn = card.querySelector('.place-bid-btn');
             if (btn) {
                 btn.disabled = product.status !== 'active' || (this.currentUser && this.currentUser.id === product.sellerId) || (this.currentUser && this.currentUser.role !== 'customer');
-                btn.textContent = product.status === 'active' ? 'Place Bid' : product.status === 'sold_pending_payment' ? 'Payment Pending' : product.status === 'sold' ? 'Sold' : 'Bidding Ended';
+                btn.textContent = product.status === 'active' ? 'Place Bid' : product.status === 'pending' ? 'Bidding Not Started' : product.status === 'sold_pending_payment' ? 'Payment Pending' : product.status === 'sold' ? 'Sold' : 'Bidding Ended';
 
                 if (this.currentUser && this.currentUser.role !== 'customer' && product.status === 'active') {
                     btn.textContent = 'Customers Only';
@@ -642,7 +684,7 @@ const App = {
                 const isSeller = this.currentUser && this.currentUser.id === product.sellerId;
                 const isNonCustomer = this.currentUser && this.currentUser.role !== 'customer';
                 btn.disabled = product.status !== 'active' || isSeller || isNonCustomer;
-                btn.textContent = product.status === 'active' ? 'Place Bid' : product.status === 'sold_pending_payment' ? 'Payment Pending' : product.status === 'sold' ? 'Sold' : 'Bidding Ended';
+                btn.textContent = product.status === 'active' ? 'Place Bid' : product.status === 'pending' ? 'Bidding Not Started' : product.status === 'sold_pending_payment' ? 'Payment Pending' : product.status === 'sold' ? 'Sold' : 'Bidding Ended';
 
                 if (isNonCustomer && product.status === 'active') {
                     btn.textContent = 'Customers Only';
