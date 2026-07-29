@@ -872,39 +872,23 @@ function loadData() {
     }
 
     seedInitialData();
-    clearRequestedAuctionData();
+    synchronizeDemoPaymentStates();
     AuctionData.products.sort((a, b) => a.name.localeCompare(b.name));
     saveData();
     endExpiredAuctions();
 }
 
-function clearRequestedAuctionData() {
-    const names = new Set([
-        'Edwardian Pearl Tiara', '1909-S VDB Lincoln Penny', 'Wedgwood Jasperware Vase Pair',
-        'Hermes Vintage Silk Scarf', '1907 Saint-Gaudens Double Eagle', 'Venetian School Oil Portrait',
-        'Barcelona Oil on Canvas', 'Louis XV Ormolu-Mounted Commode', 'Renaissance Carved Oak Cabinet',
-        'Ming Dynasty Jade Dragon Carving', 'Victorian Diamond Necklace'
-    ]);
-    const productIds = new Set();
-    AuctionData.products.forEach(product => {
-        if (!names.has(product.name)) return;
-        productIds.add(product.id);
-        product.status = 'pending';
-        product.currentBid = product.startingBid;
-        product.highestBidder = null;
-        product.highestBidderId = null;
-        product.bidHistory = [];
-        product.startTime = null;
-        product.endTime = null;
-    });
-    if (!productIds.size) return;
-    AuctionData.bids = AuctionData.bids.filter(bid => !productIds.has(bid.productId));
-    AuctionData.payments = AuctionData.payments.filter(payment => !productIds.has(payment.productId));
-    AuctionData.adminActions = AuctionData.adminActions.filter(action => !productIds.has(action.productId));
-    AuctionData.users.forEach(user => {
-        user.purchases = (user.purchases || []).filter(item => !productIds.has(item.productId));
-        user.soldProducts = (user.soldProducts || []).filter(item => !productIds.has(item.productId));
-    });
+function synchronizeDemoPaymentStates() {
+    // A browser can retain an older product state while already having the
+    // bundled payment records. Keep those immutable demo payment records and
+    // their product statuses in agreement so the Sold page always shows them.
+    AuctionData.payments
+        .filter(payment => payment.id && payment.id.startsWith('payment_init_'))
+        .forEach(payment => {
+            const product = getProductById(payment.productId);
+            if (!product) return;
+            product.status = payment.status === 'completed' ? 'sold' : 'sold_pending_payment';
+        });
 }
 
 function seedInitialData() {
